@@ -1,44 +1,50 @@
 <?php
 require_once __DIR__ . '/../models/Product.php';
 
-class ProductController
-{
+class ProductController {
+
     private $product;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->product = new Product();
     }
 
-    public function index()
-    {
+    // 🔹 Show all products
+    public function index() {
         $products = $this->product->getAll();
         require __DIR__ . '/../views/products/index.php';
     }
 
-    public function create()
-    {
+    // 🔹 Show create form
+    public function create() {
         require __DIR__ . '/../views/products/create.php';
     }
 
-    public function store()
-    {
-        $name = $_POST['name'];
-        $description = $_POST['description'];
-        $price = $_POST['price'];
-        $status = $_POST['status'];
+    // 🔹 Store data
+    public function store() {
 
-        $img = $_FILES['img']['name'];
-        move_uploaded_file($_FILES['img']['tmp_name'], "../public/img/" . $img);
+        $name= $_POST['name']??'';
+        $description= $_POST['description']??'';
+        $price= $_POST['price']??'';
+        $status= $_POST['status']??'active';
+        $brand_id    = $_POST['brand_id'] ?? 'null';
 
-        $this->product->insert($name, $description, $price, $status, $img);
+        // image upload
+        $img = $_FILES['img']['name']??'';
+        $tmp = $_FILES['img']['tmp_name']??'';
 
-        header("Location: index.php?action=index");
-        exit;
+        if(!empty($img)){
+            move_uploaded_file($tmp, __DIR__ . '/../../public/img/'.$img);
+        }
+
+        $this->product->insert($name,$description,$price,$status,$img,$brand_id);
+
+        header("Location: index.php");
+        exit();
     }
 
-    public function edit()
-    {
+    // 🔹 Edit form
+    public function edit() {
         $id = $_GET['id'];
         $result = $this->product->getById($id);
         $product = mysqli_fetch_assoc($result);
@@ -46,44 +52,36 @@ class ProductController
         require __DIR__ . '/../views/products/edit.php';
     }
 
-    public function update()
-    {
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $description = $_POST['description'];
-        $price = $_POST['price'];
+    // 🔹 Update
+    public function update() {
+
+        $id     = $_POST['id'];
+        $name   = $_POST['name'];
+        $description   = $_POST['description'];
+        $price  = $_POST['price'];
         $status = $_POST['status'];
 
-        $result = $this->product->getById($id);
-        $old = mysqli_fetch_assoc($result);
+        $img = $_FILES['img']['name']??'';
+        $tmp = $_FILES['img']['tmp_name']??'';
 
-        $img = $old['img'];
-
-        if (!empty($_FILES['img']['name'])) {
-            $img = $_FILES['img']['name'];
-            move_uploaded_file($_FILES['img']['tmp_name'], "../public/img/" . $img);
+        if(!empty($img)){
+            move_uploaded_file($tmp, __DIR__ . '/../../public/img/'.$img);
+        } else {
+            $old = $this->product->getById($id);
+            $data = mysqli_fetch_assoc($old);
+            $img = $data['img'];
         }
 
-        $this->product->update($id, $name, $description, $price, $status, $img);
-
-        header("Location: index.php?action=index");
-        exit;
+        $this->product->update($id,$name,$description,$price,$status,$img);
+        header("Location: index.php");
+        exit();
     }
 
-    public function delete()
-    {
+    // 🔹 Delete
+    public function delete() {
         $id = $_GET['id'];
         $this->product->delete($id);
-        header("Location: index.php?action=index");
-        exit;
-    }
-
-    public function show()
-    {
-        $id = $_GET['id'];
-        $result = $this->product->getById($id);
-        $product = mysqli_fetch_assoc($result);
-
-        require __DIR__ . '/../views/products/show.php';
+        header("Location: index.php");
+        exit();
     }
 }

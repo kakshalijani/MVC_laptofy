@@ -1,27 +1,18 @@
 <?php
+class Database {
 
-class Database
-{
     private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $database = "laptofy";
+    private $user = "root";
+    private $pass = "";
+    private $db = "laptofy";
 
-    public $conn;
+    public function connect() {
+        $conn = mysqli_connect($this->host, $this->user, $this->pass, $this->db);
 
-    public function connect()
-    {
-        $this->conn = mysqli_connect(
-            $this->host,
-            $this->username,
-            $this->password,
-            $this->database
-        );
-
-        if (!$this->conn) {
-            die("Database connection failed: " . mysqli_connect_error());
+        if (!$conn) {
+            die("Database Connection Failed");
         }
 
-        return $this->conn;
+        return $conn;
     }
 }

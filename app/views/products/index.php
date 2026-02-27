@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Products</title>
-    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="/laptofy_MVC/css/style.css">
 </head>
 <body>
 
 <table border="1" align="center">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Description</th>
             <th>Image</th>
@@ -30,7 +29,12 @@
                 <td><?= htmlspecialchars($row['name']); ?></td>
                 <td><?= htmlspecialchars($row['description']); ?></td>
                 <td>
-                    <img src="../public/img/<?= htmlspecialchars($row['img']); ?>" width="100" alt="<?= htmlspecialchars($row['name']); ?>">
+                    <?php 
+                    $images = explode(",", $row['img']); 
+                    foreach($images as $image): 
+                    ?>
+                        <img src="img/<?= htmlspecialchars($image); ?>" width="50" style="margin-right:5px;">
+                    <?php endforeach; ?>
                 </td>
                 <td><?= htmlspecialchars($row['price']); ?></td>
                 <td><?= htmlspecialchars($row['status']); ?></td>
@@ -41,12 +45,12 @@
                     </a>
                 </td>
                 <td>
-                    <a href="index.php?action=edit&id=<?= $row['id']; ?>">
+                    <a href="edit.php?action=edit&id=<?= $row['id']; ?>">
                         Update
                     </a>
                 </td>
                 <td>
-                    <a href="index.php?action=show&id=<?= $row['id']; ?>">
+                    <a href="show.php?action=show&id=<?= $row['id']; ?>">
                         View
                     </a>
                 </td>
@@ -61,8 +65,9 @@
     <tfoot>
         <tr>
             <td colspan="9" align="center">
-                <a href="index.php?action=create" class="my-button-style">Add New Product</a>
-            </td>
+                <a href="create.php?action=create">
+                    <button type="button">Add New Product</button>
+                </a>            </td>
         </tr>
     </tfoot>
 </table>

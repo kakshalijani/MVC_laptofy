@@ -1,65 +1,59 @@
 <?php
 require_once __DIR__ . '/../core/Database.php';
 
-class Product
-{
+class Product {
+
     private $conn;
 
-    public function __construct()
-    {
-        $database = new Database();
-        $this->conn = $database->connect();
+    public function __construct() {
+        $db = new Database();
+        $this->conn = $db->connect();
     }
 
-    public function getAll()
-    {
-        $sql = "SELECT * FROM laptofy ORDER BY id ASC";
-        return mysqli_query($this->conn, $sql);
+    // 🔹 Get All Products
+    public function getAll() {
+        $sql = "SELECT * FROM laptofy ORDER BY id DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result();
     }
 
-    public function getById($id)
-    {
-        $id = (int)$id;
-        $sql = "SELECT * FROM laptofy WHERE id = $id";
-        return mysqli_query($this->conn, $sql);
+    // 🔹 Get Product By ID
+    public function getById($id) {
+        $sql = "SELECT * FROM laptofy WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id); // i = integer
+        $stmt->execute();
+        return $stmt->get_result();
     }
 
-    public function insert($name, $description, $price, $status, $img)
-    {
-        $name = mysqli_real_escape_string($this->conn, $name);
-        $description = mysqli_real_escape_string($this->conn, $description);
-        $status = mysqli_real_escape_string($this->conn, $status);
-        $img = mysqli_real_escape_string($this->conn, $img);
+    // 🔹 Insert Product
+    public function insert($name, $description, $price, $status, $brand_id, $img = '') {
+    // We REMOVE 'id' from here because the database will generate it automatically
+    $sql = "INSERT INTO laptofy (name, description, price, status, brand_id, img) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $this->db->prepare($sql);
+    
+    // "ssdsis" = string, string, double, string, integer, string
+    $stmt->bind_param("ssdsis", $name, $description, $price, $status, $brand_id, $img);
+    
+    return $stmt->execute();
+}
 
-        $sql = "INSERT INTO laptofy (name, description, price, status, img)
-                VALUES ('$name', '$description', '$price', '$status', '$img')";
-
-        return mysqli_query($this->conn, $sql);
+    // 🔹 Update Product
+    public function update($id, $name, $desc, $price, $status, $img, $brand_id) {
+        $sql = "UPDATE laptofy 
+                SET name = ?, description = ?, price = ?, status = ?, img = ?, brand_id = ?
+                WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ssdssi", $name, $desc, $price, $status, $img, $brand_id, $id);
+        return $stmt->execute();
     }
 
-    public function update($id, $name, $description, $price, $status, $img)
-    {
-        $id = (int)$id;
-        $name = mysqli_real_escape_string($this->conn, $name);
-        $description = mysqli_real_escape_string($this->conn, $description);
-        $status = mysqli_real_escape_string($this->conn, $status);
-        $img = mysqli_real_escape_string($this->conn, $img);
-
-        $sql = "UPDATE laptofy SET
-                name='$name',
-                description='$description',
-                price='$price',
-                status='$status',
-                img='$img'
-                WHERE id=$id";
-
-        return mysqli_query($this->conn, $sql);
-    }
-
-    public function delete($id)
-    {
-        $id = (int)$id;
-        $sql = "DELETE FROM laptofy WHERE id=$id";
-        return mysqli_query($this->conn, $sql);
+    // 🔹 Delete Product
+    public function delete($id) {
+        $sql = "DELETE FROM laptofy WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
     }
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>View Product Details</title>
-    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="/laptofy_MVC/css/style.css">
 </head>
 <body>
 
