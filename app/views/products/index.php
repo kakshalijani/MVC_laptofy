@@ -16,29 +16,32 @@
             <th>Image</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Brand</th>
             <th>Delete</th>
             <th>Update</th>
             <th>View</th>
+            
         </tr>
     </thead>
     <tbody>
     <?php if (!empty($products) && mysqli_num_rows($products) > 0): ?>
         <?php while ($row = mysqli_fetch_assoc($products)): ?>
             <tr>
-                <td><?= htmlspecialchars($row['id']); ?></td>
                 <td><?= htmlspecialchars($row['name']); ?></td>
                 <td><?= htmlspecialchars($row['description']); ?></td>
                 <td>
                     <?php 
-                    $images = explode(",", $row['img']); 
-                    foreach($images as $image): 
+                    $img= explode(",", $row['img']); 
+                    foreach($img as $imges): 
                     ?>
-                        <img src="img/<?= htmlspecialchars($image); ?>" width="50" style="margin-right:5px;">
+                        <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($imges); ?>" width="50" style="margin-right:5px;">
                     <?php endforeach; ?>
                 </td>
                 <td><?= htmlspecialchars($row['price']); ?></td>
                 <td><?= htmlspecialchars($row['status']); ?></td>
-                <td>
+              
+                    <td><?php echo $row['brand_id']; ?></td>
+                      <td>
                     <a href="index.php?action=delete&id=<?= $row['id']; ?>"
                        onclick="return confirm('Are you sure you want to delete this item?')">
                         Delete

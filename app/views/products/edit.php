@@ -8,7 +8,7 @@
 
 <body>
 
-    <form action="index.php?action=update" method="POST" enctype="multipart/form-data">
+    <form action="/laptofy_MV/public/index.php?controller=product&action=update" method="POST" enctype="multipart/form-data">
         <table border="1" align="center">
 
             <tr>
@@ -18,12 +18,7 @@
             </tr>
 
             <!-- ID (readonly) -->
-            <tr>
-                <td>ID</td>
-                <td>
-                    <input type="text" name="id" value="<?= $product['id']; ?>" readonly>
-                </td>
-            </tr>
+            
 
             <tr>
                 <td>Name</td>
@@ -64,11 +59,24 @@
                 <td>Status</td>
                 <td>
                     <select name="status" required>
-                        <option value="Active" <?= ($product['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
-                        <option value="Inactive" <?= ($product['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                        <option value="active" <?= ($product['status'] == 'active') ? 'selected' : ''; ?>>Active</option>
+                        <option value="inactive" <?= ($product['status'] == 'inactive') ? 'selected' : ''; ?>>Inactive</option>
                     </select>
                 </td>
             </tr>
+            <tr>
+    <td>Brand</td>
+    <td>
+        <select name="brand_id" required>
+            <?php while ($brand = mysqli_fetch_assoc($brands)): ?>
+                <option value="<?= $brand['brand_id']; ?>"
+                    <?= ($brand['brand_id'] == $product['brand_id']) ? 'selected' : ''; ?>>
+                    <?= htmlspecialchars($brand['name']); ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+    </td>
+</tr>
 
             <tr>
                 <td colspan="2" align="center">

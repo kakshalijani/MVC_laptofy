@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../core/Database.php';
-
-class Product {
+class Product { 
 
     private $conn;
 
@@ -30,22 +29,22 @@ class Product {
     // 🔹 Insert Product
     public function insert($name, $description, $price, $status, $brand_id, $img = '') {
     // We REMOVE 'id' from here because the database will generate it automatically
-    $sql = "INSERT INTO laptofy (name, description, price, status, brand_id, img) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $this->db->prepare($sql);
+    $sql = "INSERT INTO laptofy (name, description, price, status, img, brand_id) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
     
-    // "ssdsis" = string, string, double, string, integer, string
-    $stmt->bind_param("ssdsis", $name, $description, $price, $status, $brand_id, $img);
+    // "ssdssi" = string, string, double, string, string, integer
+    $stmt->bind_param("ssdssi", $name, $description, $price, $status, $img, $brand_id);
     
     return $stmt->execute();
 }
 
     // 🔹 Update Product
-    public function update($id, $name, $desc, $price, $status, $img, $brand_id) {
+    public function update($id, $name, $description, $price, $status, $img, $brand_id) {
         $sql = "UPDATE laptofy 
                 SET name = ?, description = ?, price = ?, status = ?, img = ?, brand_id = ?
                 WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssdssi", $name, $desc, $price, $status, $img, $brand_id, $id);
+        $stmt->bind_param("ssdssii", $name, $description, $price, $status, $img, $brand_id, $id);
         return $stmt->execute();
     }
 

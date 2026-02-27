@@ -17,37 +17,58 @@ class ProductController {
 
     // 🔹 Show create form
     public function create() {
+        require_once __DIR__ . '/../models/Brand.php';
+        $brandModel = new Brand();
+        $brands = $brandModel->getAll();
         require __DIR__ . '/../views/products/create.php';
     }
 
     // 🔹 Store data
     public function store() {
 
-        $name= $_POST['name']??'';
-        $description= $_POST['description']??'';
-        $price= $_POST['price']??'';
-        $status= $_POST['status']??'active';
-        $brand_id    = $_POST['brand_id'] ?? 'null';
+    $name        = $_POST['name'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $price       = $_POST['price'] ?? 0;
+    $status      = $_POST['status'] ?? 'active';
+    $brand_id    = $_POST['brand_id'] ?? null; // ✅ SAFETY CHECK
 
-        // image upload
-        $img = $_FILES['img']['name']??'';
-        $tmp = $_FILES['img']['tmp_name']??'';
-
-        if(!empty($img)){
-            move_uploaded_file($tmp, __DIR__ . '/../../public/img/'.$img);
-        }
-
-        $this->product->insert($name,$description,$price,$status,$img,$brand_id);
-
-        header("Location: index.php");
-        exit();
+    // safety check
+    if (empty($brand_id)) {
+        die("Brand is required");
     }
 
+    // IMAGE UPLOAD (MULTIPLE)
+    $images = [];
+
+    if (!empty($_FILES['img']['name'][0])) {
+        foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+            $filename = time() . '_' . $_FILES['img']['name'][$key];
+            move_uploaded_file($tmp, __DIR__ . '/../../public/img/' . $filename);
+            $images[] = $filename;
+        }
+    }
+
+    $imgString = implode(',', $images);
+
+    $this->product->insert(
+        $name,
+        $description,
+        $price,
+        $status,
+        $brand_id,   //  NOW VALID
+        $imgString
+    );
+
+    header("Location: index.php?action=index");
+}
     // 🔹 Edit form
     public function edit() {
+        require_once __DIR__ . '/../models/Brand.php';
         $id = $_GET['id'];
         $result = $this->product->getById($id);
         $product = mysqli_fetch_assoc($result);
+        $brandModel = new Brand();
+        $brands = $brandModel->getAll();
 
         require __DIR__ . '/../views/products/edit.php';
     }
@@ -60,6 +81,7 @@ class ProductController {
         $description   = $_POST['description'];
         $price  = $_POST['price'];
         $status = $_POST['status'];
+        $brand_id    = $_POST['brand_id'] ?? 'null';
 
         $img = $_FILES['img']['name']??'';
         $tmp = $_FILES['img']['tmp_name']??'';
@@ -72,7 +94,7 @@ class ProductController {
             $img = $data['img'];
         }
 
-        $this->product->update($id,$name,$description,$price,$status,$img);
+        $this->product->update($id,$name,$description,$price,$status,$img,$brand_id);
         header("Location: index.php");
         exit();
     }
@@ -83,5 +105,11 @@ class ProductController {
         $this->product->delete($id);
         header("Location: index.php");
         exit();
+    }
+    public function show() {
+        $id = $_GET['id'];
+        $result = $this->product->getById($id);
+        $product = mysqli_fetch_assoc($result);
+        require __DIR__ . '/../views/products/show.php';
     }
 }

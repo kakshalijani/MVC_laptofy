@@ -8,7 +8,7 @@
 <body>
 
 <div class="container">
-    <form action="index.php?action=store" method="POST" enctype="multipart/form-data">
+    <form action="/laptofy_MVC/public/index.php?controller=product&action=store" method="POST" enctype="multipart/form-data">
         <table align="center" border="1">
             <thead>
                 <tr>
@@ -42,13 +42,24 @@
                     <td>Status</td>
                     <td>
                         <select name="status" required>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                     </td>
                 </tr>
-
                 <tr>
+                    <td>Brand</td>
+                    <td>
+                        <select name="brand_id" required>
+                         <option value="">Select Brand</option>
+                            <?php foreach ($brands as $brand): ?>
+                            <option value="<?= $brand['brand_id'] ?>">
+                            <?= $brand['name'] ?>
+                            </option>
+                            <?php endforeach; ?>
+                            </select>
+                        </td>
+                </tr>
                     <td colspan="2" align="center">
                         <div class="btn-center">
                             <input type="submit" value="Insert">

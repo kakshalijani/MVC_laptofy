@@ -22,13 +22,15 @@
     </tr>
 
     <tr>
-        <th>Image</th>
-        <td>
-            <?php if (!empty($product['image'])): ?>
-                <img src="../uploads/<?= htmlspecialchars($product['image']); ?>"
+    <th>Image</th>
+    <td>
+        <?php if (!empty($product['image'])): ?>
+            <?php foreach (explode(',', $product['image']) as $img): ?>
+                <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($img); ?>"
                      width="120" height="120"
-                     style="border-radius:8px;object-fit:cover;">
-            <?php else: ?>
+                     style="border-radius:8px;object-fit:cover;margin-right:5px;">
+                <?php endforeach; ?>
+                <?php else: ?>
                 No Image
             <?php endif; ?>
         </td>
@@ -43,6 +45,10 @@
         <th>Status</th>
         <td><?= htmlspecialchars($product['status']); ?></td>
     </tr>
+    <tr>
+            <th>Brand id</th>
+            <td><?= htmlspecialchars($brand['brand_id']); ?></td>
+        </tr>
 
     <tr>
         <td colspan="2" align="center">
