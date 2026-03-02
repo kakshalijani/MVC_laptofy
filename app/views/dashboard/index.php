@@ -9,7 +9,8 @@
 <table border="0" align="center" cellpadding="10">
     <tr>
         <td align="center" colspan="2">
-            <h1>Welcome to the Dashboard</h1>
+            <h1>Welcome to the LAPTOFY</h1>
+            <h4>Admin Dashboard</h4>
             <p>Use the buttons below to manage your brands and products.</p>
         </td>
     </tr>

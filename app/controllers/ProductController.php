@@ -87,46 +87,71 @@ class ProductController {
     }
 
     // 🔹 Update product
-    public function update() {
+    public function update()
+{
+    $id          = $_POST['id'];
+    $name        = $_POST['name'];
+    $description = $_POST['description'];
+    $price       = $_POST['price'];
+    $status      = $_POST['status'];
+    $brand_id    = $_POST['brand_id'];
 
-        $id          = $_POST['id'];
-        $name        = $_POST['name'];
-        $description = $_POST['description'];
-        $price       = $_POST['price'];
-        $status      = $_POST['status'];
-        $brand_id    = $_POST['brand_id'];
+    // 1️⃣ Get existing product
+    $oldResult = $this->product->getById($id);
+    $oldData   = mysqli_fetch_assoc($oldResult);
 
-        // MULTIPLE IMAGE UPDATE
-        $images = [];
+    $existingImages = [];
+    if (!empty($oldData['img'])) {
+        $existingImages = explode(',', $oldData['img']);
+    }
 
-        if (!empty($_FILES['img']['name'][0])) {
-            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-                $filename = uniqid() . '_' . $_FILES['img']['name'][$key];
-                move_uploaded_file(
-                    $tmp,
-                    __DIR__ . '/../../public/img/product/' . $filename
-                );
-                $images[] = $filename;
+    // 2️⃣ Delete selected images
+    if (!empty($_POST['delete_img'])) {
+        foreach ($_POST['delete_img'] as $deleteImg) {
+
+            $path = __DIR__ . '/../../public/img/product/' . $deleteImg;
+
+            if (file_exists($path)) {
+                unlink($path);
             }
-            $imgString = implode(',', $images);
-        } else {
-            $old = $this->product->getById($id);
-            $data = mysqli_fetch_assoc($old);
-            $imgString = $data['img'];
+
+            $existingImages = array_diff($existingImages, [$deleteImg]);
         }
+    }
 
-        $this->product->update(
-            $id,
-            $name,
-            $description,
-            $price,
-            $status,
-            $imgString,
-            $brand_id
-        );
+    // 3️⃣ Add NEW images (NO DUPLICATES)
+    if (!empty($_FILES['img']['name'][0])) {
+        foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
 
-        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
-        exit;
+            if ($_FILES['img']['error'][$key] !== UPLOAD_ERR_OK) {
+                continue;
+            }
+
+            $ext = pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION);
+            $filename = uniqid('product_', true) . '.' . $ext;
+
+            move_uploaded_file(
+                $tmp,
+                __DIR__ . '/../../public/img/product/' . $filename
+            );
+
+            $existingImages[] = $filename;
+        }
+    }
+
+    // 4️⃣ Update product
+    $this->product->update(
+        $id,
+        $name,
+        $description,
+        $price,
+        $status,
+        implode(',', $existingImages),
+        $brand_id
+    );
+
+    header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+    exit;
     }
 
     // 🔹 Delete product
