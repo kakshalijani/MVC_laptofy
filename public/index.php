@@ -1,33 +1,62 @@
 <?php
-require_once __DIR__ . '/../app/controllers/ProductController.php';
 require_once __DIR__ . '/../app/controllers/BrandController.php';
+require_once __DIR__ . '/../app/controllers/ProductController.php';
+require_once __DIR__ . '/../app/controllers/DashboardController.php';
 
-$controller = new ProductController();
 $brandController = new BrandController();
+$productController = new ProductController();
+$dashboardController = new DashboardController();
 
+$controller = $_GET['controller'] ?? 'dashboard';
 $action = $_GET['action'] ?? 'index';
 
-if ($action == "create") {
-    $controller->create();
-    $brandController->create();
+if ($controller == "brand") {
+    if ($action == "create") {
+        $brandController->create();
+    }
+    elseif ($action == "store") {
+        $brandController->store();
+    }
+    elseif ($action == "edit") {
+        $brandController->edit();
+    }
+    elseif ($action == "update") {
+        $brandController->update();
+    }
+    elseif ($action == "delete") {
+        $brandController->delete();
+    }
+    elseif ($action == "show") {
+        $brandController->show();
+    }
+    else {
+        $brandController->index(); // default page
+    }
 }
-elseif ($action == "store") {
-    $controller->store();
-    $brandController->store();
-}
-elseif ($action == "edit") {
-    $controller->edit();
-    $brandController->edit();
-}
-elseif ($action == "update") {
-    $controller->update();
-    $brandController->update();
-}
-elseif ($action == "delete") {
-    $controller->delete();
-    $brandController->delete();
+elseif ($controller == "product") {
+    if ($action == "create") {
+        $productController->create();
+    }
+    elseif ($action == "store") {
+        $productController->store();
+    }
+    elseif ($action == "edit") {
+        $productController->edit();
+    }
+    elseif ($action == "update") {
+        $productController->update();
+    }
+    elseif ($action == "delete") {
+        $productController->delete();
+    }
+    elseif ($action == "show") {
+        $productController->show();
+    }
+    else {
+        $productController->index(); // default page
+    }
 }
 else {
-    $controller->index(); // default page
-    $brandController->index();
+    // default to dashboard
+    $dashboardController->index();
 }

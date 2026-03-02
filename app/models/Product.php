@@ -1,57 +1,163 @@
 <?php
 require_once __DIR__ . '/../core/Database.php';
-class Product { 
 
-    private $conn;
+class Product
+{
+    private mysqli $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $db = new Database();
         $this->conn = $db->connect();
     }
 
-    // 🔹 Get All Products
-    public function getAll() {
-        $sql = "SELECT * FROM laptofy ORDER BY id DESC";
+    // 🔹 Get all products
+    public function getAll(): mysqli_result
+    {
+        $sql = "SELECT * FROM laptofy ORDER BY id ASC";
         $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
         $stmt->execute();
         return $stmt->get_result();
     }
 
-    // 🔹 Get Product By ID
-    public function getById($id) {
+    // 🔹 Get product by ID
+    public function getById(int $id): mysqli_result
+    {
         $sql = "SELECT * FROM laptofy WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id); // i = integer
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
         $stmt->execute();
+
         return $stmt->get_result();
     }
 
-    // 🔹 Insert Product
-    public function insert($name, $description, $price, $status, $brand_id, $img = '') {
-    // We REMOVE 'id' from here because the database will generate it automatically
-    $sql = "INSERT INTO laptofy (name, description, price, status, img, brand_id) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    
-    // "ssdssi" = string, string, double, string, string, integer
-    $stmt->bind_param("ssdssi", $name, $description, $price, $status, $img, $brand_id);
-    
-    return $stmt->execute();
-}
+    // 🔹 Insert product
+    public function insert(
+        string $name,
+        string $description,
+        float $price,
+        string $status,
+        int $brand_id,
+        string $img = ''
+    ): bool {
+        $sql = "INSERT INTO laptofy 
+                (name, description, price, status, brand_id, img)
+                VALUES (?, ?, ?, ?, ?, ?)";
 
-    // 🔹 Update Product
-    public function update($id, $name, $description, $price, $status, $img, $brand_id) {
-        $sql = "UPDATE laptofy 
-                SET name = ?, description = ?, price = ?, status = ?, img = ?, brand_id = ?
-                WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssdssii", $name, $description, $price, $status, $img, $brand_id, $id);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param(
+            "ssdiss",
+            $name,
+            $description,
+            $price,
+            $status,
+            $brand_id,
+            $img
+        );
+
         return $stmt->execute();
     }
 
-    // 🔹 Delete Product
-    public function delete($id) {
+    // 🔹 Check if product already exists
+    public function productExists(string $name, ?int $excludeId = null): bool
+    {
+        if ($excludeId !== null) {
+            $sql = "SELECT id FROM laptofy 
+                    WHERE LOWER(name) = LOWER(?) AND id != ?";
+            $stmt = $this->conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("si", $name, $excludeId);
+        } else {
+            $sql = "SELECT id FROM laptofy WHERE LOWER(name) = LOWER(?)";
+            $stmt = $this->conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("s", $name);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0;
+    }
+    public function getactiveproducts(): mysqli_result
+    {
+        $sql = "SELECT * FROM laptofy WHERE status = 'active' ORDER BY id ASC";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    // 🔹 Update product
+    public function update(
+        int $id,
+        string $name,
+        string $description,
+        float $price,
+        string $status,
+        string $img,
+        int $brand_id
+    ): bool {
+        $sql = "UPDATE laptofy
+                SET name = ?, description = ?, price = ?, status = ?, img = ?, brand_id = ?
+                WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param(
+            "ssdssii",
+            $name,
+            $description,
+            $price,
+            $status,
+            $img,
+            $brand_id,
+            $id
+        );
+
+        return $stmt->execute();
+    }
+
+    // 🔹 Delete product
+    public function delete(int $id): bool
+    {
         $sql = "DELETE FROM laptofy WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }

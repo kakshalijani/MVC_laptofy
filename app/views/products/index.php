@@ -8,69 +8,89 @@
 </head>
 <body>
 
-<table border="1" align="center">
+<table border="1" align="center" cellpadding="8">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Image</th>
+            <th>Images</th>
             <th>Price</th>
             <th>Status</th>
-            <th>Brand</th>
             <th>Delete</th>
             <th>Update</th>
             <th>View</th>
-            
         </tr>
     </thead>
+
     <tbody>
-    <?php if (!empty($products) && mysqli_num_rows($products) > 0): ?>
-        <?php while ($row = mysqli_fetch_assoc($products)): ?>
+        <?php if (!empty($products) && mysqli_num_rows($products) > 0): ?>
+            <?php while ($row = mysqli_fetch_assoc($products)): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['name']); ?></td>
+                    <td><?= htmlspecialchars($row['description']); ?></td>
+
+                    <td>
+                        <?php if (!empty($row['img'])): ?>
+                            <?php
+                                $images = explode(",", $row['img']);
+                                foreach ($images as $image):
+                            ?>
+                                <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image); ?>"
+                                     width="60"
+                                     style="margin-right:6px; border:1px solid #ccc; padding:3px;">
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <em>No image</em>
+                        <?php endif; ?>
+                    </td>
+
+                    <td><?= htmlspecialchars($row['price']); ?></td>
+                    <td><?= htmlspecialchars($row['status']); ?></td>
+                    
+
+                    <td>
+                        <a href="/laptofy_MVC/public/index.php?controller=product&action=delete&id=<?= (int)$row['id']; ?>"
+                           onclick="return confirm('Are you sure you want to delete this product?')">
+                           <button type="button">Delete</button>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="/laptofy_MVC/public/index.php?controller=product&action=edit&id=<?= (int)$row['id']; ?>">
+                            <button type="button">Edit</button>
+
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="/laptofy_MVC/public/index.php?controller=product&action=show&id=<?= (int)$row['id']; ?>">
+                           <button type="button">View</button>
+                        </a>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
             <tr>
-                <td><?= htmlspecialchars($row['name']); ?></td>
-                <td><?= htmlspecialchars($row['description']); ?></td>
-                <td>
-                    <?php 
-                    $img= explode(",", $row['img']); 
-                    foreach($img as $imges): 
-                    ?>
-                        <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($imges); ?>" width="50" style="margin-right:5px;">
-                    <?php endforeach; ?>
-                </td>
-                <td><?= htmlspecialchars($row['price']); ?></td>
-                <td><?= htmlspecialchars($row['status']); ?></td>
-              
-                    <td><?php echo $row['brand_id']; ?></td>
-                      <td>
-                    <a href="index.php?action=delete&id=<?= $row['id']; ?>"
-                       onclick="return confirm('Are you sure you want to delete this item?')">
-                        Delete
-                    </a>
-                </td>
-                <td>
-                    <a href="edit.php?action=edit&id=<?= $row['id']; ?>">
-                        Update
-                    </a>
-                </td>
-                <td>
-                    <a href="show.php?action=show&id=<?= $row['id']; ?>">
-                        View
-                    </a>
-                </td>
+                <td colspan="9" align="center">No products found</td>
             </tr>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="9" align="center">No records found</td>
-        </tr>
-    <?php endif; ?>
+        <?php endif; ?>
     </tbody>
+
     <tfoot>
         <tr>
             <td colspan="9" align="center">
-                <a href="create.php?action=create">
+                <a href="/laptofy_MVC/public/index.php?controller=product&action=create">
                     <button type="button">Add New Product</button>
-                </a>            </td>
+                </a>
+
+                <a href="/laptofy_MVC/public/index.php?controller=brand&action=index">
+                    <button type="button">View Brands</button>
+                </a>
+
+                <a href="/laptofy_MVC/public/index.php?controller=dashboard&action=index">
+                    <button type="button">Go to Dashboard</button>
+                </a>
+            </td>
         </tr>
     </tfoot>
 </table>

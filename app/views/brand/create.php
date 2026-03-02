@@ -7,15 +7,56 @@
     <link rel="stylesheet" href="/laptofy_MVC/css/style.css">
 </head>
 <body>
-    <h2>Create New Brand</h2>
-    <form action="/laptofy_MVC/public/index.php?controller=brand&action=store" method="POST" enctype="multipart/form-data">
-        <label for="name">Brand Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
 
-        <label for="img">Image:</label>
-        <input type="file" name="img[]" multiple><br><br>
+<form action="/laptofy_MVC/public/index.php?controller=brand&action=store"
+      method="POST"
+      enctype="multipart/form-data">
 
-        <button type="submit">Create Brand</button>
-    </form>
+    <table border="0" cellpadding="10" align="center">
+        <tr>
+            <th colspan="2" style="text-align:center;">Create New Brand</th>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="name">Brand Name</label>
+            </td>
+            <td>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       required
+                       placeholder="Enter brand name">
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="img">Brand Images</label>
+            </td>
+            <td>
+                <input type="file"
+                       name="img[]"
+                       multiple
+                       accept="image/*">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                <div class="btn-center">
+                    <button type="submit">Insert</button>
+
+                    <a href="/laptofy_MVC/public/index.php?controller=brand&action=index"
+                       class="btn-link">
+                       <button type="button">Display List</button>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</form>
+
 </body>
 </html>

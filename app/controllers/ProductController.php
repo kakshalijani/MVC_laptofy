@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Brand.php';
 
 class ProductController {
 
@@ -11,105 +12,148 @@ class ProductController {
 
     // 🔹 Show all products
     public function index() {
-        $products = $this->product->getAll();
+        $products = $this->product->getactiveproducts();
         require __DIR__ . '/../views/products/index.php';
     }
 
     // 🔹 Show create form
     public function create() {
-        require_once __DIR__ . '/../models/Brand.php';
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
         require __DIR__ . '/../views/products/create.php';
     }
 
-    // 🔹 Store data
+    // 🔹 Store product
     public function store() {
 
-    $name        = $_POST['name'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $price       = $_POST['price'] ?? 0;
-    $status      = $_POST['status'] ?? 'active';
-    $brand_id    = $_POST['brand_id'] ?? null; // ✅ SAFETY CHECK
+        $name        = $_POST['name'] ?? '';
+        $description = $_POST['description'] ?? '';
+        $price       = $_POST['price'] ?? 0;
+        $status      = $_POST['status'] ?? 'active';
+        $brand_id    = $_POST['brand_id'] ?? null;
 
-    // safety check
-    if (empty($brand_id)) {
-        die("Brand is required");
-    }
-
-    // IMAGE UPLOAD (MULTIPLE)
-    $images = [];
-
-    if (!empty($_FILES['img']['name'][0])) {
-        foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-            $filename = time() . '_' . $_FILES['img']['name'][$key];
-            move_uploaded_file($tmp, __DIR__ . '/../../public/img/' . $filename);
-            $images[] = $filename;
+        if ($this->product->productExists($name)) {
+            echo '<script>
+                    alert("Product already exists!");
+                    window.location.href="index.php?controller=product&action=create";
+                  </script>';
+                  exit();
         }
+
+        // MULTIPLE IMAGE UPLOAD
+        $images = [];
+
+        if (!empty($_FILES['img']['name'][0])) {
+            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+                $filename = time() . '_' . $_FILES['img']['name'][$key];
+                move_uploaded_file(
+                    $tmp,
+                    __DIR__ . '/../../public/img/' . $filename
+                );
+                $images[] = $filename;
+            }
+        }
+
+        $imgString = implode(',', $images);
+
+        $this->product->insert(
+            $name,
+            $description,
+            $price,
+            $status,
+            $brand_id,
+            $imgString
+        );
+
+        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+        exit;
     }
 
-    $imgString = implode(',', $images);
-
-    $this->product->insert(
-        $name,
-        $description,
-        $price,
-        $status,
-        $brand_id,   //  NOW VALID
-        $imgString
-    );
-
-    header("Location: index.php?action=index");
-}
-    // 🔹 Edit form
+    // 🔹 Show edit form
     public function edit() {
-        require_once __DIR__ . '/../models/Brand.php';
-        $id = $_GET['id'];
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die("Invalid Product ID");
+        }
+
         $result = $this->product->getById($id);
         $product = mysqli_fetch_assoc($result);
+
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
 
         require __DIR__ . '/../views/products/edit.php';
     }
 
-    // 🔹 Update
+    // 🔹 Update product
     public function update() {
 
-        $id     = $_POST['id'];
-        $name   = $_POST['name'];
-        $description   = $_POST['description'];
-        $price  = $_POST['price'];
-        $status = $_POST['status'];
-        $brand_id    = $_POST['brand_id'] ?? 'null';
+        $id          = $_POST['id'];
+        $name        = $_POST['name'];
+        $description = $_POST['description'];
+        $price       = $_POST['price'];
+        $status      = $_POST['status'];
+        $brand_id    = $_POST['brand_id'];
 
-        $img = $_FILES['img']['name']??'';
-        $tmp = $_FILES['img']['tmp_name']??'';
+        // MULTIPLE IMAGE UPDATE
+        $images = [];
 
-        if(!empty($img)){
-            move_uploaded_file($tmp, __DIR__ . '/../../public/img/'.$img);
+        if (!empty($_FILES['img']['name'][0])) {
+            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+                $filename = time() . '_' . $_FILES['img']['name'][$key];
+                move_uploaded_file(
+                    $tmp,
+                    __DIR__ . '/../../public/img/' . $filename
+                );
+                $images[] = $filename;
+            }
+            $imgString = implode(',', $images);
         } else {
             $old = $this->product->getById($id);
             $data = mysqli_fetch_assoc($old);
-            $img = $data['img'];
+            $imgString = $data['img'];
         }
 
-        $this->product->update($id,$name,$description,$price,$status,$img,$brand_id);
-        header("Location: index.php");
-        exit();
+        $this->product->update(
+            $id,
+            $name,
+            $description,
+            $price,
+            $status,
+            $imgString,
+            $brand_id
+        );
+
+        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+        exit;
     }
 
-    // 🔹 Delete
+    // 🔹 Delete product
     public function delete() {
-        $id = $_GET['id'];
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die("Invalid request");
+        }
+
         $this->product->delete($id);
-        header("Location: index.php");
-        exit();
+
+        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+        exit;
     }
+
+    // 🔹 View single product
     public function show() {
-        $id = $_GET['id'];
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die("Invalid Product ID");
+        }
+
         $result = $this->product->getById($id);
         $product = mysqli_fetch_assoc($result);
+
         require __DIR__ . '/../views/products/show.php';
     }
 }
