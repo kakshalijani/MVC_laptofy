@@ -37,13 +37,13 @@
             <td>
                 <?php if (!empty($brand['img'])): ?>
                     <?php foreach (explode(',', $brand['img']) as $image): ?>
-                        <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
+                        <img src="/laptofy_MVC/public/img/brand/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
                              width="100"
                              style="margin:5px; border:1px solid #ccc; padding:4px;">
-                            <lable style="font-size:12px;">
+                            <label style="font-size:12px;">
                                 <input type="checkbox" name="delete_img[]" value="<?= htmlspecialchars($image, ENT_QUOTES); ?>">
                                 Delete
-                            </lable>
+                            </label>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <em>No image available</em>

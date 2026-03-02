@@ -24,7 +24,7 @@
         <td>
             <?php if (!empty($brand['img'])): ?>
                 <?php foreach (explode(',', $brand['img']) as $image): ?>
-                    <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
+                    <img src="/laptofy_MVC/public/img/brand/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
                          width="100"
                          style="margin:6px; border:1px solid #ccc; padding:4px;">
                 <?php endforeach; ?>

@@ -35,7 +35,7 @@
                                 $images = explode(",", $row['img']);
                                 foreach ($images as $image):
                             ?>
-                                <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image); ?>"
+                                <img src="/laptofy_MVC/public/img/product/<?= htmlspecialchars($image); ?>"
                                      width="60"
                                      style="margin-right:6px; border:1px solid #ccc; padding:3px;">
                             <?php endforeach; ?>

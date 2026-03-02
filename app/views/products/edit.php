@@ -44,7 +44,7 @@
             <td>
                 <?php if (!empty($product['img'])): ?>
                     <?php foreach (explode(',', $product['img']) as $image): ?>
-                        <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image); ?>"
+                        <img src="/laptofy_MVC/public/img/product/<?= htmlspecialchars($image); ?>"
                              width="100"
                              style="margin-right:8px; border:1px solid #ccc; padding:4px;">
                              <label style="font-size:12px;">

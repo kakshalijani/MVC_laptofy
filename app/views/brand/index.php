@@ -29,7 +29,7 @@
                     <td>
                         <?php if (!empty($row['img'])): ?>
                             <?php foreach (explode(',', $row['img']) as $image): ?>
-                                <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
+                                <img src="/laptofy_MVC/public/img/brand/<?= htmlspecialchars($image, ENT_QUOTES); ?>"
                                      width="80"
                                      style="margin:4px; border:1px solid #ccc; padding:3px;">
                             <?php endforeach; ?>

@@ -45,10 +45,10 @@ class BrandController {
         if (!empty($_FILES['img']['name'][0])) {
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
                 if (!empty($tmp)) {
-                    $filename = time() . '_' . basename($_FILES['img']['name'][$key]);
+                    $filename = uniqid() . '_' . basename($_FILES['img']['name'][$key]);
                     move_uploaded_file(
                         $tmp,
-                        __DIR__ . '/../../public/img/' . $filename
+                        __DIR__ . '/../../public/img/brand/' . $filename
                     );
                     $images[] = $filename;
                 }
@@ -90,10 +90,10 @@ class BrandController {
         if (!empty($_FILES['img']['name'][0])) {
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
                 if (!empty($tmp)) {
-                    $filename = time() . '_' . basename($_FILES['img']['name'][$key]);
+                    $filename = uniqid() . '_' . basename($_FILES['img']['name'][$key]);
                     move_uploaded_file(
                         $tmp,
-                        __DIR__ . '/../../public/img/' . $filename
+                        __DIR__ . '/../../public/img/brand/' . $filename
                     );
                     $images[] = $filename;
                 }
@@ -135,7 +135,7 @@ class BrandController {
         // 🧹 Delete images from folder
         if (!empty($brand['img'])) {
             foreach (explode(',', $brand['img']) as $img) {
-                $path = __DIR__ . '/../../public/img/' . trim($img);
+                $path = __DIR__ . '/../../public/img/brand/' . trim($img);
                 if (file_exists($path)) {
                     unlink($path);
                 }

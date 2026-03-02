@@ -45,10 +45,10 @@ class ProductController {
 
         if (!empty($_FILES['img']['name'][0])) {
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-                $filename = time() . '_' . $_FILES['img']['name'][$key];
+                $filename = uniqid() . '_' . $_FILES['img']['name'][$key];
                 move_uploaded_file(
                     $tmp,
-                    __DIR__ . '/../../public/img/' . $filename
+                    __DIR__ . '/../../public/img/product/' . $filename
                 );
                 $images[] = $filename;
             }
@@ -101,10 +101,10 @@ class ProductController {
 
         if (!empty($_FILES['img']['name'][0])) {
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-                $filename = time() . '_' . $_FILES['img']['name'][$key];
+                $filename = uniqid() . '_' . $_FILES['img']['name'][$key];
                 move_uploaded_file(
                     $tmp,
-                    __DIR__ . '/../../public/img/' . $filename
+                    __DIR__ . '/../../public/img/product/' . $filename
                 );
                 $images[] = $filename;
             }

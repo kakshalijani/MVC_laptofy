@@ -30,7 +30,7 @@
                     $images = explode(',', $product['img']);
                     foreach ($images as $img):
                 ?>
-                    <img src="/laptofy_MVC/public/img/<?= htmlspecialchars($img); ?>"
+                    <img src="/laptofy_MVC/public/img/product/<?= htmlspecialchars($img); ?>"
                          width="120"
                          height="120"
                          style="border-radius:8px; object-fit:cover; margin-right:8px; border:1px solid #ccc;">
