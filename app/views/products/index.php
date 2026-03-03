@@ -16,6 +16,7 @@
             <th>Images</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Brand</th>
             <th>Delete</th>
             <th>Update</th>
             <th>View</th>
@@ -46,7 +47,7 @@
 
                     <td><?= htmlspecialchars($row['price']); ?></td>
                     <td><?= htmlspecialchars($row['status']); ?></td>
-                    
+                    <td><?= htmlspecialchars($row['brand_name']); ?></td>
 
                     <td>
                         <a href="/laptofy_MVC/public/index.php?controller=product&action=delete&id=<?= (int)$row['id']; ?>"

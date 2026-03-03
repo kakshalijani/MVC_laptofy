@@ -169,15 +169,17 @@ class ProductController {
     }
 
     // 🔹 View single product
-    public function show() {
-
-        $id = $_GET['id'] ?? null;
+    public function show()
+    {
+        $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
             die("Invalid Product ID");
         }
 
-        $result = $this->product->getById($id);
-        $product = mysqli_fetch_assoc($result);
+        $product = $this->product->getById($id);
+        if (!$product) {
+            die("Product not found");
+        }
 
         require __DIR__ . '/../views/products/show.php';
     }

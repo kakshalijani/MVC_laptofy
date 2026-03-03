@@ -14,7 +14,14 @@ class Product
     // 🔹 Get all products
     public function getAll(): mysqli_result
     {
-        $sql = "SELECT * FROM laptofy ORDER BY id ASC";
+         $sql = "
+            SELECT 
+                p.*,
+                b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            ORDER BY p.id ASC
+        ";
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
@@ -26,10 +33,17 @@ class Product
     }
 
     // 🔹 Get product by ID
-    public function getById(int $id): mysqli_result
+    public function getById(int $id): ?array
     {
-        $sql = "SELECT * FROM laptofy WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $sql = "
+            SELECT 
+                p.*,
+                b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.id = ?
+        ";       
+         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
             throw new Exception("Prepare failed: " . $this->conn->error);
@@ -38,7 +52,8 @@ class Product
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
-        return $stmt->get_result();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
     }
 
     // 🔹 Insert product
@@ -61,7 +76,7 @@ class Product
         }
 
         $stmt->bind_param(
-            "ssdiss",
+            "ssdsis",
             $name,
             $description,
             $price,
@@ -104,7 +119,15 @@ class Product
     }
     public function getactiveproducts(): mysqli_result
     {
-        $sql = "SELECT * FROM laptofy WHERE status = 'active' ORDER BY id ASC";
+        $sql = "
+            SELECT 
+                p.*,
+                b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.status = 'active'
+            ORDER BY p.id ASC
+        ";
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
