@@ -1,60 +1,101 @@
 <?php
+
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/Brand.php';
+require_once __DIR__ . '/../core/Auth.php';
 
-class ProductController {
+class ProductController
+{
+    private Product $product;
 
-    private $product;
+    public function __construct()
+    {
+        // Start session first
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-    public function __construct() {
+        // Protect all product pages
+        Auth::requireLogin();
+
         $this->product = new Product();
     }
 
-    // 🔹 Show all products
-    public function index() {
-        $products = $this->product->getactiveproducts();
+    // ==============================
+    // Show all products
+    // ==============================
+    public function index(): void
+    {
+        $products = $this->product->getAll();
         require __DIR__ . '/../views/products/index.php';
     }
 
-    // 🔹 Show create form
-    public function create() {
+    // ==============================
+    // Show create form
+    // ==============================
+    public function create(): void
+    {
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
+
         require __DIR__ . '/../views/products/create.php';
     }
 
-    // 🔹 Store product
-    public function store() {
-
-        $name        = $_POST['name'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $price       = $_POST['price'] ?? 0;
-        $status      = $_POST['status'] ?? 'active';
-        $brand_id    = $_POST['brand_id'] ?? null;
-
-        if ($this->product->productExists($name)) {
-            echo '<script>
-                    alert("Product already exists!");
-                    window.location.href="index.php?controller=product&action=create";
-                  </script>';
-                  exit();
+    // ==============================
+    // Store new product
+    // ==============================
+    public function store(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?controller=product&action=index");
+            exit;
         }
 
-        // MULTIPLE IMAGE UPLOAD
+        $name        = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $price       = floatval($_POST['price'] ?? 0);
+        $status      = $_POST['status'] ?? 'active';
+        $brand_id    = intval($_POST['brand_id'] ?? 0);
+
+        if (empty($name)) {
+            die("Product name is required");
+        }
+
+        // Check duplicate product
+        if ($this->product->productExists($name)) {
+            echo "<script>
+                    alert('Product already exists!');
+                    window.location.href='index.php?controller=product&action=create';
+                  </script>";
+            exit;
+        }
+
+        // ==============================
+        // Upload Images
+        // ==============================
         $images = [];
+        $allowed = ['jpg','jpeg','png','webp'];
 
         if (!empty($_FILES['img']['name'][0])) {
+
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-                $filename = uniqid() . '_' . $_FILES['img']['name'][$key];
+
+                if ($_FILES['img']['error'][$key] !== UPLOAD_ERR_OK) continue;
+
+                $ext = strtolower(pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION));
+
+                if (!in_array($ext, $allowed)) continue;
+
+                $filename = uniqid('product_', true) . '.' . $ext;
+
                 move_uploaded_file(
                     $tmp,
                     __DIR__ . '/../../public/img/product/' . $filename
                 );
+
                 $images[] = $filename;
             }
         }
-
-        $imgString = implode(',', $images);
 
         $this->product->insert(
             $name,
@@ -62,23 +103,26 @@ class ProductController {
             $price,
             $status,
             $brand_id,
-            $imgString
+            implode(',', $images)
         );
 
-        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+        header("Location: index.php?controller=product&action=index");
         exit;
     }
 
-    // 🔹 Show edit form
-    public function edit() {
+    // ==============================
+    // Show edit form
+    // ==============================
+    public function edit(): void
+    {
+        $id = intval($_GET['id'] ?? 0);
 
-        $id = $_GET['id'] ?? null;
         if (!$id) {
             die("Invalid Product ID");
         }
 
         $result = $this->product->getById($id);
-        $product = mysqli_fetch_assoc($result);
+        $product = $result->fetch_assoc();
 
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
@@ -86,100 +130,115 @@ class ProductController {
         require __DIR__ . '/../views/products/edit.php';
     }
 
-    // 🔹 Update product
-    public function update()
-{
-    $id          = $_POST['id'];
-    $name        = $_POST['name'];
-    $description = $_POST['description'];
-    $price       = $_POST['price'];
-    $status      = $_POST['status'];
-    $brand_id    = $_POST['brand_id'];
-
-    // 1️⃣ Get existing product
-    $oldResult = $this->product->getById($id);
-    $oldData   = mysqli_fetch_assoc($oldResult);
-
-    $existingImages = [];
-    if (!empty($oldData['img'])) {
-        $existingImages = explode(',', $oldData['img']);
-    }
-
-    // 2️⃣ Delete selected images
-    if (!empty($_POST['delete_img'])) {
-        foreach ($_POST['delete_img'] as $deleteImg) {
-
-            $path = __DIR__ . '/../../public/img/product/' . $deleteImg;
-
-            if (file_exists($path)) {
-                unlink($path);
-            }
-
-            $existingImages = array_diff($existingImages, [$deleteImg]);
+    // ==============================
+    // Update product
+    // ==============================
+    public function update(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?controller=product&action=index");
+            exit;
         }
-    }
 
-    // 3️⃣ Add NEW images (NO DUPLICATES)
-    if (!empty($_FILES['img']['name'][0])) {
-        foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+        $id          = intval($_POST['id'] ?? 0);
+        $name        = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $price       = floatval($_POST['price'] ?? 0);
+        $status      = $_POST['status'] ?? 'active';
+        $brand_id    = intval($_POST['brand_id'] ?? 0);
 
-            if ($_FILES['img']['error'][$key] !== UPLOAD_ERR_OK) {
-                continue;
+        $oldResult = $this->product->getById($id);
+        $oldData = $oldResult->fetch_assoc();
+
+        $existingImages = !empty($oldData['img']) ? explode(',', $oldData['img']) : [];
+
+        // ==============================
+        // Delete selected images
+        // ==============================
+        if (!empty($_POST['delete_img'])) {
+
+            foreach ($_POST['delete_img'] as $deleteImg) {
+
+                $path = __DIR__ . '/../../public/img/product/' . $deleteImg;
+
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $existingImages = array_diff($existingImages, [$deleteImg]);
             }
-
-            $ext = pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION);
-            $filename = uniqid('product_', true) . '.' . $ext;
-
-            move_uploaded_file(
-                $tmp,
-                __DIR__ . '/../../public/img/product/' . $filename
-            );
-
-            $existingImages[] = $filename;
         }
+
+        // ==============================
+        // Upload new images
+        // ==============================
+        $allowed = ['jpg','jpeg','png','webp'];
+
+        if (!empty($_FILES['img']['name'][0])) {
+
+            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+
+                if ($_FILES['img']['error'][$key] !== UPLOAD_ERR_OK) continue;
+
+                $ext = strtolower(pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION));
+
+                if (!in_array($ext, $allowed)) continue;
+
+                $filename = uniqid('product_', true) . '.' . $ext;
+
+                move_uploaded_file(
+                    $tmp,
+                    __DIR__ . '/../../public/img/product/' . $filename
+                );
+
+                $existingImages[] = $filename;
+            }
+        }
+
+        $this->product->update(
+            $id,
+            $name,
+            $description,
+            $price,
+            $status,
+            implode(',', $existingImages),
+            $brand_id
+        );
+
+        header("Location: index.php?controller=product&action=index");
+        exit;
     }
 
-    // 4️⃣ Update product
-    $this->product->update(
-        $id,
-        $name,
-        $description,
-        $price,
-        $status,
-        implode(',', $existingImages),
-        $brand_id
-    );
+    // ==============================
+    // Delete product
+    // ==============================
+    public function delete(): void
+    {
+        $id = intval($_GET['id'] ?? 0);
 
-    header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
-    exit;
-    }
-
-    // 🔹 Delete product
-    public function delete() {
-
-        $id = $_GET['id'] ?? null;
         if (!$id) {
             die("Invalid request");
         }
 
         $this->product->delete($id);
 
-        header("Location: /laptofy_MVC/public/index.php?controller=product&action=index");
+        header("Location: index.php?controller=product&action=index");
         exit;
     }
 
-    // 🔹 View single product
-    public function show()
+    // ==============================
+    // View single product
+    // ==============================
+    public function show(): void
     {
-        $id = (int)($_GET['id'] ?? 0);
+        $id = intval($_GET['id'] ?? 0);
+
         if (!$id) {
             die("Invalid Product ID");
         }
 
-        $product = $this->product->getById($id);
-        if (!$product) {
-            die("Product not found");
-        }
+        $result = $this->product->getById($id);
+        $product = $result->fetch_assoc();
 
         require __DIR__ . '/../views/products/show.php';
     }

@@ -1,108 +1,65 @@
 <?php
+
 require_once __DIR__ . '/../models/Brand.php';
+require_once __DIR__ . '/../core/Auth.php';
 
-class BrandController {
-
+class BrandController
+{
     private Brand $brand;
 
-    public function __construct() {
+    public function __construct()
+    {
+        // Start session
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Protect routes
+        Auth::requireLogin();
+
+        // Load model
         $this->brand = new Brand();
     }
 
-    // 🔹 Show all brands
-    public function index() {
-        $brand = $this->brand->getAll();
+    // Show all brands
+    public function index(): void
+    {
+        $brands = $this->brand->getAll();
         require __DIR__ . '/../views/brand/index.php';
     }
 
-    // 🔹 Show create form
-    public function create() {
+    // Show create form
+    public function create(): void
+    {
         require __DIR__ . '/../views/brand/create.php';
     }
 
-    // 🔹 Store new brand
-    public function store() {
-
+    // Store brand
+    public function store(): void
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: index.php?controller=brand&action=index');
+            header("Location: index.php?controller=brand&action=index");
             exit;
         }
 
         $name = trim($_POST['name'] ?? '');
 
-        // ✅ CHECK BRAND EXISTS (MODEL METHOD)
+        if ($name === '') {
+            die("Brand name is required");
+        }
+
+        // Check duplicate brand
         if ($this->brand->brandExists($name)) {
             echo "<script>
-                    alert('Brand already exists!');
-                    window.location.href='index.php?controller=brand&action=create';
+                    alert('Brand already exists');
+                    window.location='index.php?controller=brand&action=create';
                   </script>";
             exit;
         }
 
-        // 📸 Upload images
+        // Upload images
         $images = [];
 
-        if (!empty($_FILES['img']['name'][0])) {
-            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
-                if (!empty($tmp)) {
-                    $filename = uniqid() . '_' . basename($_FILES['img']['name'][$key]);
-                    move_uploaded_file(
-                        $tmp,
-                        __DIR__ . '/../../public/img/brand/' . $filename
-                    );
-                    $images[] = $filename;
-                }
-            }
-        }
-
-        $this->brand->create($name, implode(',', $images));
-
-        header('Location: /laptofy_MVC/public/index.php?controller=brand&action=index');
-        exit;
-    }
-
-    // 🔹 Show edit form
-    public function edit() {
-        $id = $_GET['id'] ?? null;
-
-        if (!$id) {
-            die("Invalid brand ID");
-        }
-
-        $brand = $this->brand->getById($id);
-        require __DIR__ . '/../views/brand/edit.php';
-    }
-
-    // 🔹 Update brand
-    public function update()
-    {
-        $id   = $_POST['id'];
-        $name = $_POST['name'];
-
-    // Get existing brand data
-        $brand = $this->brand->getById($id);
-        $existingImages = [];
-
-        if (!empty($brand['img'])) {
-            $existingImages = explode(',', $brand['img']);
-        }
-
-    //Handle image deletion (checkbox)
-        if (!empty($_POST['delete_img'])) {
-            foreach ($_POST['delete_img'] as $deleteImg) {
-                $path = __DIR__ . '/../../public/img/brand/' . $deleteImg;
-
-                // remove file
-                if (file_exists($path)) {
-                    unlink($path);
-                }
-
-            // remove from existing images array
-            $existingImages = array_diff($existingImages, [$deleteImg]);
-        }
-    }
-
-    // Handle NEW image uploads (ADD, not replace)
         if (!empty($_FILES['img']['name'][0])) {
 
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
@@ -111,66 +68,166 @@ class BrandController {
                     continue;
                 }
 
-                $ext = pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION);
+                $ext = strtolower(pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION));
 
-                // unique filename (NO DUPLICATES)
+                $allowed = ['jpg','jpeg','png','webp'];
+
+                if (!in_array($ext, $allowed)) {
+                    continue;
+                }
+
                 $filename = uniqid('brand_', true) . '.' . $ext;
 
-                move_uploaded_file(
-                    $tmp,
-                    __DIR__ . '/../../public/img/brand/' . $filename
-                );
+                $uploadPath = __DIR__ . '/../../public/img/brand/' . $filename;
 
-                $existingImages[] = $filename; // 🔥 ADD to existing
+                move_uploaded_file($tmp, $uploadPath);
+
+                $images[] = $filename;
             }
         }
 
-        // Save updated data
-        $this->brand->update(
-            $id,
-            $name,
-            implode(',', $existingImages)
-        );
+        $this->brand->create($name, implode(',', $images));
 
-        header('Location: /laptofy_MVC/public/index.php?controller=brand&action=index');
+        header("Location: index.php?controller=brand&action=index");
         exit;
     }
-    // 🔹 Show single brand
-    public function show() {
+
+    // Edit brand
+    public function edit(): void
+    {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            die("Invalid brand ID");
+            die("Invalid Brand ID");
         }
 
-        $brand = $this->brand->getById($id);
+        $brand = $this->brand->getById((int)$id);
+
+        if (!$brand) {
+            die("Brand not found");
+        }
+
+        require __DIR__ . '/../views/brand/edit.php';
+    }
+
+    // Update brand
+    public function update(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?controller=brand&action=index");
+            exit;
+        }
+
+        $id = $_POST['id'] ?? null;
+        $name = trim($_POST['name'] ?? '');
+
+        if (!$id || $name === '') {
+            die("Invalid data");
+        }
+
+        $brand = $this->brand->getById((int)$id);
+
+        if (!$brand) {
+            die("Brand not found");
+        }
+
+        $existingImages = !empty($brand['img']) ? explode(',', $brand['img']) : [];
+
+        // Delete selected images
+        if (!empty($_POST['delete_img'])) {
+
+            foreach ($_POST['delete_img'] as $img) {
+
+                $path = __DIR__ . '/../../public/img/brand/' . $img;
+
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $existingImages = array_diff($existingImages, [$img]);
+            }
+        }
+
+        // Upload new images
+        if (!empty($_FILES['img']['name'][0])) {
+
+            foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
+
+                if ($_FILES['img']['error'][$key] !== UPLOAD_ERR_OK) {
+                    continue;
+                }
+
+                $ext = strtolower(pathinfo($_FILES['img']['name'][$key], PATHINFO_EXTENSION));
+
+                $allowed = ['jpg','jpeg','png','webp'];
+
+                if (!in_array($ext, $allowed)) {
+                    continue;
+                }
+
+                $filename = uniqid('brand_', true) . '.' . $ext;
+
+                move_uploaded_file($tmp, __DIR__ . '/../../public/img/brand/' . $filename);
+
+                $existingImages[] = $filename;
+            }
+        }
+
+        $this->brand->update($id, $name, implode(',', $existingImages));
+
+        header("Location: index.php?controller=brand&action=index");
+        exit;
+    }
+
+    // Show single brand
+    public function show(): void
+    {
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+            die("Invalid Brand ID");
+        }
+
+        $brand = $this->brand->getById((int)$id);
+
+        if (!$brand) {
+            die("Brand not found");
+        }
+
         require __DIR__ . '/../views/brand/show.php';
     }
 
-    // 🔹 Delete brand
-    public function delete() {
-
+    // Delete brand
+    public function delete(): void
+    {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
             die("Invalid request");
         }
 
-        $brand = $this->brand->getById($id);
+        $brand = $this->brand->getById((int)$id);
 
-        // 🧹 Delete images from folder
+        if (!$brand) {
+            die("Brand not found");
+        }
+
+        // Delete images
         if (!empty($brand['img'])) {
+
             foreach (explode(',', $brand['img']) as $img) {
+
                 $path = __DIR__ . '/../../public/img/brand/' . trim($img);
+
                 if (file_exists($path)) {
                     unlink($path);
                 }
             }
         }
 
-        $this->brand->delete($id);
+        $this->brand->delete((int)$id);
 
-        header('Location: /laptofy_MVC/public/index.php?controller=brand&action=index');
+        header("Location: index.php?controller=brand&action=index");
         exit;
     }
 }

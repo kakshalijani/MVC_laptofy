@@ -1,13 +1,15 @@
 <?php
+
 require_once __DIR__ . '/../core/Database.php';
 
-class Brand {
+class Brand
+{
+    private $conn;
 
-    private mysqli $conn;
-
-    public function __construct() {
-        $db = new Database();
-        $this->conn = $db->connect();
+    public function __construct()
+    {
+        $database = new Database();
+        $this->conn = $database->connect();
 
         if (!$this->conn) {
             die("Database connection failed");
@@ -15,100 +17,135 @@ class Brand {
     }
 
     // 🔹 Get all brands
-    public function getAll(): mysqli_result {
+    public function getAll()
+    {
         $sql = "SELECT * FROM brand ORDER BY brand_id ASC";
-        $stmt = $this->conn->prepare($sql);
+        $result = $this->conn->query($sql);
 
-        if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
+        if (!$result) {
+            die("Query Failed: " . $this->conn->error);
         }
 
-        $stmt->execute();
-        return $stmt->get_result();
+        return $result; // return mysqli_result
     }
 
     // 🔹 Get brand by ID
-    public function getById(int $id): ?array {
+    public function getById($id)
+    {
         $sql = "SELECT * FROM brand WHERE brand_id = ?";
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
+            die("Prepare Failed: " . $this->conn->error);
         }
 
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
-        return $result->fetch_assoc() ?: null;
+        $brand = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $brand;
     }
+    public function getTotalBrands()
+{
+    $sql = "SELECT COUNT(*) as total FROM brand";
+    $result = mysqli_query($this->conn,$sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['total'];
+}
 
     // 🔹 Create new brand
-    public function create(string $name, string $img): bool {
+    public function create($name, $img)
+    {
         $sql = "INSERT INTO brand (name, img) VALUES (?, ?)";
+
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
+            die("Prepare Failed: " . $this->conn->error);
         }
 
         $stmt->bind_param("ss", $name, $img);
-        return $stmt->execute();
+
+        $success = $stmt->execute();
+
+        $stmt->close();
+
+        return $success;
     }
 
-    // 🔹 Check if brand already exists (case-insensitive)
-    public function brandExists(string $name, ?int $excludeId = null): bool {
+    // 🔹 Check if brand exists
+    public function brandExists($name, $excludeId = null)
+    {
+        if ($excludeId) {
 
-        if ($excludeId !== null) {
-            $sql = "SELECT brand_id FROM brand 
-                    WHERE LOWER(name) = LOWER(?) AND brand_id != ?";
+            $sql = "SELECT brand_id FROM brand WHERE name = ? AND brand_id != ?";
             $stmt = $this->conn->prepare($sql);
-
-            if (!$stmt) {
-                die("Prepare failed: " . $this->conn->error);
-            }
-
             $stmt->bind_param("si", $name, $excludeId);
+
         } else {
-            $sql = "SELECT brand_id FROM brand WHERE LOWER(name) = LOWER(?)";
+
+            $sql = "SELECT brand_id FROM brand WHERE name = ?";
             $stmt = $this->conn->prepare($sql);
-
-            if (!$stmt) {
-                die("Prepare failed: " . $this->conn->error);
-            }
-
             $stmt->bind_param("s", $name);
         }
 
-        $stmt->execute();
-        $stmt->store_result();
+        if (!$stmt) {
+            die("Prepare Failed: " . $this->conn->error);
+        }
 
-        return $stmt->num_rows > 0;
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $exists = $result->num_rows > 0;
+
+        $stmt->close();
+
+        return $exists;
     }
 
     // 🔹 Update brand
-    public function update(int $id, string $name, string $img): bool {
+    public function update($id, $name, $img)
+    {
         $sql = "UPDATE brand SET name = ?, img = ? WHERE brand_id = ?";
+
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
+            die("Prepare Failed: " . $this->conn->error);
         }
 
         $stmt->bind_param("ssi", $name, $img, $id);
-        return $stmt->execute();
+
+        $success = $stmt->execute();
+
+        $stmt->close();
+
+        return $success;
     }
 
     // 🔹 Delete brand
-    public function delete(int $id): bool {
+    public function delete($id)
+    {
         $sql = "DELETE FROM brand WHERE brand_id = ?";
+
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
+            die("Prepare Failed: " . $this->conn->error);
         }
 
         $stmt->bind_param("i", $id);
-        return $stmt->execute();
+
+        $success = $stmt->execute();
+
+        $stmt->close();
+
+        return $success;
     }
 }
