@@ -1,6 +1,6 @@
 <?php
-if(!isset($page)){
-    $page = '';
+if(session_status() === PHP_SESSION_NONE){
+    session_start();
 }
 ?>
 
@@ -8,7 +8,7 @@ if(!isset($page)){
 <html>
 <head>
 <title>Admin Panel</title>
-
+<link rel="stylesheet" href="/laptofy_MVC/css/layout.css">
 </head>
 
 <body>
@@ -19,39 +19,71 @@ if(!isset($page)){
 
 <h2>Admin Panel</h2>
 
-<a href="../app/view/dashboard/index.php">Dashboard</a>
-<a href="../app/view/product/create.php">Add Product</a>
-<a href="../app/view/brand/create.php">Add Brand</a>
+<a href="index.php?controller=dashboard&action=index">Dashboard</a>
 
-<div class="logout">
-<a href="/laptofy_MVC/logout">Logout</a>
+<a href="index.php?controller=product&action=create">Add Product</a>
+
+<a href="index.php?controller=brand&action=create">Add Brand</a>
+
+<a href="index.php?controller=auth&action=logout">Logout</a>
+
 </div>
 
-</div>
+
+<!-- Main Area -->
+
+<div class="main">
 
 <!-- Topbar -->
 
 <div class="topbar">
 
-<div class="profile">
-<a href="/laptofy_MVC/profile">
-<img src="/laptofy_MVC/public/profile.png">
-</a>
+<div class="profile-menu">
+
+<img src="/laptofy_MVC/public/uploads/<?php echo $_SESSION['user']['profile'] ?? 'default.jpg'; ?>" 
+class="profile-icon" onclick="toggleMenu()">
+
+<div id="dropdown" class="dropdown">
+
+<a href="index.php?controller=profile&action=edit">Edit Profile</a>
+
+<a href="index.php?controller=auth&action=logout">Logout</a>
+
+</div>
+
 </div>
 
 </div>
 
-<!-- Page Content -->
+
+<!-- Dynamic Page Content -->
 
 <div class="content">
 
 <?php
-if($page != ''){
-    require $page;
+if(isset($view)){
+    require $view;
 }
 ?>
 
 </div>
+
+</div>
+
+
+<script>
+
+function toggleMenu(){
+    var menu = document.getElementById("dropdown");
+
+    if(menu.style.display === "block"){
+        menu.style.display = "none";
+    }else{
+        menu.style.display = "block";
+    }
+}
+
+</script>
 
 </body>
 </html>

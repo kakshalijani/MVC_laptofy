@@ -65,30 +65,16 @@ class User
     }
 
     // 🔹 Update user profile
-    public function updateUserProfile($data)
-    {
-        $sql = "UPDATE user 
-                SET first_name = ?, last_name = ?, profile_pic = ?
-                WHERE id = ?";
+   public function updateUser($id,$first_name,$last_name,$email,$password,$profile)
+{
+    $sql = "UPDATE user 
+            SET first_name='$first_name',
+                last_name='$last_name',
+                email='$email',
+                password='$password',
+                profile='$profile'
+            WHERE id='$id'";
 
-        $stmt = $this->conn->prepare($sql);
-
-        if (!$stmt) {
-            die("Prepare failed: " . $this->conn->error);
-        }
-
-        $stmt->bind_param(
-            "sssi",
-            $data['first_name'],
-            $data['last_name'],
-            $data['profile_pic'],
-            $data['id']
-        );
-
-        $success = $stmt->execute();
-
-        $stmt->close();
-
-        return $success;
-    }
+    return mysqli_query($this->conn,$sql);
+}
 }

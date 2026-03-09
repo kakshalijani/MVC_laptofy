@@ -1,0 +1,193 @@
+/* Reset */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+/* Page Background */
+
+body{
+background:linear-gradient(135deg,#6a6ccf,#7c59c7);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* Hide admin layout if loaded */
+
+.sidebar{
+display:none;
+}
+
+.topbar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+/* Edit Profile Container */
+
+.edit-container{
+width:650px;
+background:rgba(255,255,255,0.15);
+padding:40px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Title */
+
+.edit-title{
+text-align:center;
+color:white;
+font-size:36px;
+margin-bottom:30px;
+}
+
+/* Table Form */
+
+.edit-table{
+width:100%;
+color:white;
+}
+
+.edit-table td{
+padding:15px;
+}
+
+/* Inputs */
+
+.edit-table input{
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+}
+
+/* Image */
+
+.profile-img{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+}
+
+/* Button */
+
+.update-btn{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+background:#2c3e50;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+.update-btn:hover{
+background:#34495e;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--glass);
+    backdrop-filter:blur(18px);
+    border-radius:18px;
+    overflow:hidden;
+}
+
+th{
+    background:linear-gradient(135deg,#ff512f,#dd2476);
+    color:white;
+    padding:15px;
+}
+
+td{
+    padding:15px;
+    color:#f1f5f9;
+}
+
+td img{
+    width:90px;
+    height:90px;
+    border-radius:12px;
+    object-fit:cover;
+}
+form{
+    background:var(--glass);
+    backdrop-filter:blur(18px);
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.35);
+}
+
+form input,
+form select{
+    width:80%;
+    padding:5px;
+    margin-bottom:18px;
+    border-radius:10px;
+    border:none;
+    background:rgba(255,255,255,0.9);
+}
+
+button,
+input[type="submit"]{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+}
+:root {
+    --primary: #4f46e5;
+    --secondary: #06b6d4;
+    --accent: #22c55e;
+    --danger: #ef4444;
+    --dark: #0f172a;
+    --light: #f8fafc;
+    --glass: rgba(255, 255, 255, 0.18);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins','Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1{
+    text-align:center;
+    color:#fff;
+    margin-bottom:30px;
+    font-size:32px;
+}

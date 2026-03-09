@@ -7,14 +7,16 @@ class DashboardController
 {
     public function index()
     {
-        $product = new Product();
-        $brand = new Brand();
+        $productModel = new Product();
+        $brandModel = new Brand();
 
-        $totalProducts = $product->getTotalProducts();
-        $totalBrands = $brand->getTotalBrands();
+        $totalProducts = $productModel->getTotalProducts();
+        $totalBrands = $brandModel->getTotalBrands();
 
-        $page = 'dashboard';
+        // view to load inside layout
+        $view = __DIR__ . '/../views/dashboard/index.php';
 
-        require __DIR__ . '/../views/dashboard/index.php';
+        // load layout
+        require __DIR__ . '/../views/admin/layout.php';
     }
 }
