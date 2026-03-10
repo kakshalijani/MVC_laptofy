@@ -50,22 +50,21 @@
                     <td><?= htmlspecialchars($row['brand_name']); ?></td>
 
                     <td>
-                        <a href="/laptofy_MVC/public/index.php?controller=product&action=delete&id=<?= (int)$row['id']; ?>"
-                           onclick="return confirm('Are you sure you want to delete this product?')">
-                           <button type="button">Delete</button>
+                        <a href="/laptofy_MVC/public/deleteproduct/<?= (int)$row['id']; ?>"
+                        onclick="return confirm('Are you sure you want to delete this product?')">
+                        <button type="button">Delete</button>
                         </a>
                     </td>
 
                     <td>
-                        <a href="/laptofy_MVC/public/index.php?controller=product&action=edit&id=<?= (int)$row['id']; ?>">
-                            <button type="button">Edit</button>
-
-                        </a>
+                        <a href="/laptofy_MVC/public/editproduct/<?= (int)$row['id']; ?>">
+                        <button type="button">Edit</button>
+                    </a>
                     </td>
 
                     <td>
-                        <a href="/laptofy_MVC/public/index.php?controller=product&action=show&id=<?= (int)$row['id']; ?>">
-                           <button type="button">View</button>
+                        <a href="/laptofy_MVC/public/viewproduct/<?= (int)$row['id']; ?>">
+                        <button type="button">View</button>
                         </a>
                     </td>
                 </tr>
@@ -80,16 +79,16 @@
     <tfoot>
         <tr>
             <td colspan="9" align="center">
-                <a href="/laptofy_MVC/public/index.php?controller=product&action=create">
-                    <button type="button">Add New Product</button>
+                <a href="/laptofy_MVC/public/addproduct">
+                <button type="button">Add New Product</button>
                 </a>
 
-                <a href="/laptofy_MVC/public/index.php?controller=brand&action=index">
-                    <button type="button">View Brands</button>
+                <a href="/laptofy_MVC/public/brandlist">
+                <button type="button">View Brands</button>
                 </a>
 
-                <a href="/laptofy_MVC/public/index.php?controller=dashboard&action=index">
-                    <button type="button">Go to Dashboard</button>
+                <a href="/laptofy_MVC/public/dashboard">
+                <button type="button">Go to Dashboard</button>
                 </a>
             </td>
         </tr>

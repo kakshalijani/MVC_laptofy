@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<form action="/laptofy_MVC/public/index.php?controller=brand&action=update"
-      method="POST"
-      enctype="multipart/form-data">
+<form action="/laptofy_MVC/updatebrand" method="POST" enctype="multipart/form-data">
 
     <input type="hidden" name="id" value="<?= (int)$brand['brand_id']; ?>">
 
@@ -66,9 +64,8 @@
         <tr>
             <td colspan="2" align="center">
                 <button type="submit">Update Brand</button>
-                <a href="/laptofy_MVC/public/index.php?controller=brand&action=index"
-                   class="btn-link">
-                    Back to List
+                <a href="/laptofy_MVC/brandlist" class="btn-link">
+               <button> Back to List</button>
                 </a>
             </td>
         </tr>

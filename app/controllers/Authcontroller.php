@@ -22,7 +22,7 @@ class AuthController
     {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=auth&action=login");
+            header("Location: http://localhost/laptofy_MVC/public/login");
             exit();
         }
 
@@ -32,7 +32,7 @@ class AuthController
         if (empty($email) || empty($password)) {
             echo "<script>
                     alert('Email and Password required');
-                    window.location='index.php?controller=auth&action=login';
+                    window.location='http://localhost/laptofy_MVC/public/login';
                   </script>";
             exit();
         }
@@ -47,16 +47,15 @@ class AuthController
             Auth::login($user);
 
             // Redirect to Dashboard
-            header("Location: index.php?controller=dashboard&action=index");
-            exit();
-
+                header("Location:http://localhost/laptofy_MVC/public/dashboard");
+                exit();
         } else {
 
             echo "<script>
-                    alert('Invalid Email or Password');
-                    window.location='index.php?controller=auth&action=login';
-                  </script>";
-            exit();
+                alert('Email and Password required');
+                window.location='http://localhost/laptofy_MVC/public/login';
+                </script>";
+                exit();
         }
     }
 
@@ -67,7 +66,7 @@ class AuthController
 
         Auth::logout();
 
-        header("Location: index.php?controller=auth&action=login");
+        header("Location: http://localhost/laptofy_MVC/public/login");
         exit();
     }
 }

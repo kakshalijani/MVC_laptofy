@@ -1,5 +1,6 @@
 RewriteEngine On
 
-# Redirect everything to public folder
-RewriteCond %{REQUEST_URI} !^/laptofy_MVC/public/
-RewriteRule ^(.*)$ public/$1 [L]
+RewriteRule ^$ public/ [L]
+
+RewriteRule (.*) public/$1 [L]
+

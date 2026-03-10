@@ -53,8 +53,8 @@
 
     <tr>
         <td colspan="2" align="center">
-            <a href="/laptofy_MVC/public/index.php?controller=product&action=index">
-                <button type="button">Back to Products</button>
+            <a href="/laptofy_MVC/public/productlist">
+            <button type="button">Back to Products</button>
             </a>
         </td>
     </tr>

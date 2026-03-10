@@ -16,7 +16,7 @@ class Product
         }
     }
 
-    // 🔹 Get all products
+    //Get all products
     public function getAll()
     {
         $sql = "SELECT p.*, b.name AS brand_name
@@ -33,17 +33,16 @@ class Product
         return $result;
     }
     public function getTotalProducts()
-{
-    $sql = "SELECT COUNT(*) AS total FROM laptofy";
-    $result = mysqli_query($this->conn, $sql);
+    {
+        $sql = "SELECT COUNT(*) AS total FROM laptofy";
+        $result = mysqli_query($this->conn, $sql);
 
-    $row = mysqli_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
 
-    return $row['total'];
-}
+        return $row['total'];
+    }
     
-
-    // 🔹 Get product by ID
+    //Get product by ID
     public function getById($id)
     {
         $sql = "SELECT p.*, b.name AS brand_name
@@ -67,7 +66,7 @@ class Product
         return $result;
     }
 
-    // 🔹 Insert product
+    //Insert product
     public function insert($name, $description, $price, $status, $brand_id, $img)
     {
         $sql = "INSERT INTO laptofy (name, description, price, status, brand_id, img)
@@ -80,7 +79,7 @@ class Product
         }
 
         $stmt->bind_param(
-            "ssdsss",
+            "ssdsis",
             $name,
             $description,
             $price,
@@ -96,7 +95,7 @@ class Product
         return $success;
     }
 
-    // 🔹 Check if product exists
+    //Check if product exists
     public function productExists($name)
     {
         $sql = "SELECT id FROM laptofy WHERE name = ?";
@@ -119,7 +118,7 @@ class Product
         return $exists;
     }
 
-    // 🔹 Update product
+    //Update product
     public function update($id, $name, $description, $price, $status, $img, $brand_id)
     {
         $sql = "UPDATE laptofy 
@@ -150,7 +149,7 @@ class Product
         return $success;
     }
 
-    // 🔹 Delete product
+    //Delete product
     public function delete($id)
     {
         $sql = "DELETE FROM laptofy WHERE id = ?";

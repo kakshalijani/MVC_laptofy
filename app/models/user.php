@@ -16,7 +16,7 @@ class User
         }
     }
 
-    // 🔹 Get user by email (for login)
+    //Get user by email (for login)
     public function getUserByEmail($email)
     {
         $sql = "SELECT * FROM user WHERE email = ? LIMIT 1";
@@ -40,7 +40,7 @@ class User
         return $user;
     }
 
-    // 🔹 Get user by ID (for profile page)
+    //Get user by ID (for profile page)
     public function getUserById($id)
     {
         $sql = "SELECT * FROM user WHERE id = ?";
@@ -64,17 +64,17 @@ class User
         return $user;
     }
 
-    // 🔹 Update user profile
+    //Update user profile
    public function updateUser($id,$first_name,$last_name,$email,$password,$profile)
-{
-    $sql = "UPDATE user 
-            SET first_name='$first_name',
+    {
+        $sql = "UPDATE user 
+                SET first_name='$first_name',
                 last_name='$last_name',
                 email='$email',
                 password='$password',
                 profile='$profile'
-            WHERE id='$id'";
+                WHERE id='$id'";
 
-    return mysqli_query($this->conn,$sql);
-}
+        return mysqli_query($this->conn,$sql);
+    }
 }

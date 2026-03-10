@@ -35,8 +35,8 @@
     </tr>
     <tr>
         <td colspan="2" align="center">
-            <a href="/laptofy_MVC/public/index.php?controller=brand&action=index" class="btn-link">
-                <button type="button">Back to Brand List</button>
+            <a href="/laptofy_MVC/brandlist" class="btn-link">
+            <button type="button">Back to Brand List</button>
             </a>
 </table>
 

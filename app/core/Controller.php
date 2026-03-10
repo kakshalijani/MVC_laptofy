@@ -10,9 +10,7 @@ class Controller
         }
     }
 
-    // =========================
     // Load Model
-    // =========================
     public function model(string $model)
     {
         $path = __DIR__ . '/../models/' . $model . '.php';
@@ -30,9 +28,7 @@ class Controller
         return new $model();
     }
 
-    // =========================
     // Load View
-    // =========================
     public function view(string $view, array $data = [])
     {
         $path = __DIR__ . '/../views/' . $view . '.php';

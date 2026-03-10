@@ -21,9 +21,7 @@ class UserController
         $this->userModel = new User();
     }
 
-    // ==============================
     // Show Profile Page
-    // ==============================
     public function profile(): void
     {
         $userId = intval($_SESSION['user']['id'] ?? 0);
@@ -41,13 +39,11 @@ class UserController
         require __DIR__ . '/../views/user/profile.php';
     }
 
-    // ==============================
     // Update Profile
-    // ==============================
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=user&action=profile");
+            header("Location: /laptofy_MVC/profile");
             exit;
         }
 
@@ -66,9 +62,7 @@ class UserController
 
         $profilePic = $_SESSION['user']['profile_pic'] ?? 'default.jpg';
 
-        // ==============================
         // Image Upload
-        // ==============================
         if (!empty($_FILES['profile_pic']['name'])) {
 
             $allowed = ['jpg','jpeg','png','webp'];
@@ -103,9 +97,7 @@ class UserController
             }
         }
 
-        // ==============================
         // Update Database
-        // ==============================
         $data = [
             'id' => $userId,
             'first_name' => $firstName,
@@ -120,7 +112,7 @@ class UserController
             $_SESSION['user']['last_name'] = $lastName;
             $_SESSION['user']['profile_pic'] = $profilePic;
 
-            header("Location: index.php?controller=user&action=profile&success=1");
+            header("Location: /laptofy_MVC/profile?success=1");
             exit;
         }
 

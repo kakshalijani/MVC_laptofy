@@ -8,10 +8,7 @@
 </head>
 <body>
 
-<form action="/laptofy_MVC/public/index.php?controller=brand&action=store"
-      method="POST"
-      enctype="multipart/form-data">
-
+<form action="/laptofy_MVC/addbrand" method="POST" enctype="multipart/form-data">
     <table border="0" cellpadding="10" align="center">
         <tr>
             <th colspan="2" style="text-align:center;">Create New Brand</th>
@@ -47,8 +44,7 @@
                 <div class="btn-center">
                     <button type="submit">Insert</button>
 
-                    <a href="/laptofy_MVC/public/index.php?controller=brand&action=index"
-                       class="btn-link">
+                    <a href="/laptofy_MVC/brandlist" class="btn-link">
                        <button type="button">Display List</button>
                     </a>
                 </div>

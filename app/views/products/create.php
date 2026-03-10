@@ -10,9 +10,9 @@
 
 <div class="container">
 
-    <form action="/laptofy_MVC/public/index.php?controller=product&action=store"
-          method="POST"
-          enctype="multipart/form-data">
+    <form action="/laptofy_MVC/public/storeproduct"
+      method="POST"
+      enctype="multipart/form-data">
 
         <table align="center" border="1" cellpadding="10">
             <thead>
@@ -80,8 +80,8 @@
                     <td colspan="2" align="center">
                         <div class="btn-center">
                             <input type="submit" value="Insert">
-                            <a href="/laptofy_MVC/public/index.php?controller=product&action=index">
-                                <button type="button">Display List</button>
+                           <a href="/laptofy_MVC/public/productlist">
+                            <button type="button">Display List</button>
                             </a>
                         </div>
                     </td>

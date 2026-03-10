@@ -21,18 +21,14 @@ class ProductController
         $this->product = new Product();
     }
 
-    // ==============================
     // Show all products
-    // ==============================
     public function index(): void
     {
         $products = $this->product->getAll();
         require __DIR__ . '/../views/products/index.php';
     }
 
-    // ==============================
     // Show create form
-    // ==============================
     public function create(): void
     {
         $brandModel = new Brand();
@@ -41,13 +37,11 @@ class ProductController
         require __DIR__ . '/../views/products/create.php';
     }
 
-    // ==============================
     // Store new product
-    // ==============================
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=product&action=index");
+            header("Location: /laptofy_MVC/productlist");
             exit;
         }
 
@@ -63,16 +57,12 @@ class ProductController
 
         // Check duplicate product
         if ($this->product->productExists($name)) {
-            echo "<script>
-                    alert('Product already exists!');
-                    window.location.href='index.php?controller=product&action=create';
-                  </script>";
+            echo "<script>alert('Product already exists!');</script>";
+            header("Location: /laptofy_MVC/addproduct");
             exit;
         }
 
-        // ==============================
         // Upload Images
-        // ==============================
         $images = [];
         $allowed = ['jpg','jpeg','png','webp'];
 
@@ -106,13 +96,11 @@ class ProductController
             implode(',', $images)
         );
 
-        header("Location: index.php?controller=product&action=index");
+        header("Location: /laptofy_MVC/productlist");
         exit;
     }
 
-    // ==============================
     // Show edit form
-    // ==============================
     public function edit(): void
     {
         $id = intval($_GET['id'] ?? 0);
@@ -130,13 +118,11 @@ class ProductController
         require __DIR__ . '/../views/products/edit.php';
     }
 
-    // ==============================
     // Update product
-    // ==============================
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=product&action=index");
+            header("Location: /laptofy_MVC/productlist");
             exit;
         }
 
@@ -152,9 +138,7 @@ class ProductController
 
         $existingImages = !empty($oldData['img']) ? explode(',', $oldData['img']) : [];
 
-        // ==============================
         // Delete selected images
-        // ==============================
         if (!empty($_POST['delete_img'])) {
 
             foreach ($_POST['delete_img'] as $deleteImg) {
@@ -169,9 +153,7 @@ class ProductController
             }
         }
 
-        // ==============================
         // Upload new images
-        // ==============================
         $allowed = ['jpg','jpeg','png','webp'];
 
         if (!empty($_FILES['img']['name'][0])) {
@@ -205,13 +187,11 @@ class ProductController
             $brand_id
         );
 
-        header("Location: index.php?controller=product&action=index");
+        header("Location: /laptofy_MVC/productlist");
         exit;
     }
 
-    // ==============================
     // Delete product
-    // ==============================
     public function delete(): void
     {
         $id = intval($_GET['id'] ?? 0);
@@ -222,13 +202,11 @@ class ProductController
 
         $this->product->delete($id);
 
-        header("Location: index.php?controller=product&action=index");
+        header("Location: /laptofy_MVC/productlist");
         exit;
     }
 
-    // ==============================
     // View single product
-    // ==============================
     public function show(): void
     {
         $id = intval($_GET['id'] ?? 0);

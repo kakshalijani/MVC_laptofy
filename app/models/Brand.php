@@ -16,7 +16,7 @@ class Brand
         }
     }
 
-    // 🔹 Get all brands
+    //Get all brands
     public function getAll()
     {
         $sql = "SELECT * FROM brand ORDER BY brand_id ASC";
@@ -29,7 +29,7 @@ class Brand
         return $result; // return mysqli_result
     }
 
-    // 🔹 Get brand by ID
+    //Get brand by ID
     public function getById($id)
     {
         $sql = "SELECT * FROM brand WHERE brand_id = ?";
@@ -50,15 +50,15 @@ class Brand
         return $brand;
     }
     public function getTotalBrands()
-{
-    $sql = "SELECT COUNT(*) as total FROM brand";
-    $result = mysqli_query($this->conn,$sql);
-    $row = mysqli_fetch_assoc($result);
+    {
+        $sql = "SELECT COUNT(*) as total FROM brand";
+        $result = mysqli_query($this->conn,$sql);
+        $row = mysqli_fetch_assoc($result);
 
-    return $row['total'];
-}
+        return $row['total'];
+    }
 
-    // 🔹 Create new brand
+    //Create new brand
     public function create($name, $img)
     {
         $sql = "INSERT INTO brand (name, img) VALUES (?, ?)";
@@ -78,7 +78,7 @@ class Brand
         return $success;
     }
 
-    // 🔹 Check if brand exists
+    //Check if brand exists
     public function brandExists($name, $excludeId = null)
     {
         if ($excludeId) {
@@ -109,7 +109,7 @@ class Brand
         return $exists;
     }
 
-    // 🔹 Update brand
+    //Update brand
     public function update($id, $name, $img)
     {
         $sql = "UPDATE brand SET name = ?, img = ? WHERE brand_id = ?";
@@ -129,7 +129,7 @@ class Brand
         return $success;
     }
 
-    // 🔹 Delete brand
+    //Delete brand
     public function delete($id)
     {
         $sql = "DELETE FROM brand WHERE brand_id = ?";

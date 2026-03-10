@@ -9,7 +9,7 @@
 
 <body>
 
-<form action="/laptofy_MVC/public/index.php?controller=product&action=update"
+<form action="/laptofy_MVC/public/updateproduct"
       method="POST"
       enctype="multipart/form-data">
 
@@ -101,7 +101,7 @@
         <tr>
             <td colspan="2" align="center">
                 <input type="submit" value="Update">
-                <a href="/laptofy_MVC/public/index.php?controller=product&action=index">
+                <a href="/laptofy_MVC/public/productlist">
                     <button type="button">Back to List</button>
                 </a>
             </td>

@@ -38,7 +38,7 @@ class BrandController
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=brand&action=index");
+            header("Location: /laptofy_MVC/brandlist");
             exit;
         }
 
@@ -51,9 +51,9 @@ class BrandController
         // Check duplicate brand
         if ($this->brand->brandExists($name)) {
             echo "<script>
-                    alert('Brand already exists');
-                    window.location='index.php?controller=brand&action=create';
-                  </script>";
+            alert('Brand already exists');
+            window.location='/laptofy_MVC/addbrand';
+            </script>";
             exit;
         }
 
@@ -88,7 +88,7 @@ class BrandController
 
         $this->brand->create($name, implode(',', $images));
 
-        header("Location: index.php?controller=brand&action=index");
+        header("Location: /laptofy_MVC/brandlist");
         exit;
     }
 
@@ -114,7 +114,7 @@ class BrandController
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?controller=brand&action=index");
+            header("Location: /laptofy_MVC/brandlist");
             exit;
         }
 
@@ -175,7 +175,7 @@ class BrandController
 
         $this->brand->update($id, $name, implode(',', $existingImages));
 
-        header("Location: index.php?controller=brand&action=index");
+        header("Location: /laptofy_MVC/brandlist");
         exit;
     }
 
@@ -227,7 +227,7 @@ class BrandController
 
         $this->brand->delete((int)$id);
 
-        header("Location: index.php?controller=brand&action=index");
+        header("Location: /laptofy_MVC/brandlist");
         exit;
     }
 }
