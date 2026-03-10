@@ -9,18 +9,17 @@ class BrandController
 
     public function __construct()
     {
-        // Start session
+        // Start session first
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        if(!isset($_SESSION['user'])){
+            header("location: /laptofy_mvc/login");
+            exit();
+        }
 
-        // Protect routes
-        Auth::requireLogin();
-
-        // Load model
-        $this->brand = new Brand();
+        $this->product = new Product();
     }
-
     // Show all brands
     public function index(): void
     {

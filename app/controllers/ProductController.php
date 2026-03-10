@@ -14,9 +14,10 @@ class ProductController
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
-        // Protect all product pages
-        Auth::requireLogin();
+        if(!isset($_SESSION['user'])){
+            header("location: /laptofy_mvc/login");
+            exit();
+        }
 
         $this->product = new Product();
     }

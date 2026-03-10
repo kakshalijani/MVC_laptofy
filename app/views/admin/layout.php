@@ -1,8 +1,8 @@
 <?php
-// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -11,29 +11,22 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
-
-    <!-- Make sure this path matches where you keep layout.css -->
-    <!-- If your layout.css is under public/css/, use that path -->
     <link rel="stylesheet" href="/laptofy_MVC/public/css/layout.css">
 </head>
 
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
 
-        <!-- If you later enable clean URLs, these can change -->
-        <a href="/laptofy_MVC/public/dashboard">Dashboard</a>
-        <a href="/laptofy_MVC/public/addproduct">Add Product</a>
-        <a href="/laptofy_MVC/public/addbrand">Add Brand</a>
-        <a href="/laptofy_MVC/public/logout">Logout</a>
+        <a href="/laptofy_MVC/dashboard">Dashboard</a>
+        <a href="/laptofy_MVC/addproduct">Add Product</a>
+        <a href="/laptofy_MVC/addbrand">Add Brand</a>
+        <a href="/laptofy_MVC/logout">Logout</a>
     </div>
 
-    <!-- Main Area -->
     <div class="main">
 
-        <!-- Topbar -->
         <div class="topbar">
 
             <div class="profile-menu">
@@ -44,8 +37,8 @@ if (session_status() === PHP_SESSION_NONE) {
                     onclick="toggleMenu()">
 
                 <div id="dropdown" class="dropdown">
-                    <a href="/laptofy_MVC/public/profile">Edit Profile</a>
-                    <a href="/laptofy_MVC/public/logout">Logout</a>
+                    <a href="/laptofy_MVC/profile">Edit Profile</a>
+                    <a href="/laptofy_MVC/logout">Logout</a>
                 </div>
             </div>
 
@@ -72,7 +65,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 menu.style.display = "block";
             }
         }
-        
+
         document.addEventListener('click', function(event) {
             var menu = document.getElementById("dropdown");
             var icon = document.querySelector('.profile-icon');

@@ -9,10 +9,6 @@ class AuthController
     // Show Login Page
     public function login(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         require __DIR__ . '/../views/auth/login.php';
     }
 
@@ -22,7 +18,7 @@ class AuthController
     {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: http://localhost/laptofy_MVC/public/login");
+            header("Location: /laptofy_MVC/login");
             exit();
         }
 
@@ -32,7 +28,7 @@ class AuthController
         if (empty($email) || empty($password)) {
             echo "<script>
                     alert('Email and Password required');
-                    window.location='http://localhost/laptofy_MVC/public/login';
+                    window.location='/laptofy_MVC/login';
                   </script>";
             exit();
         }
@@ -47,13 +43,13 @@ class AuthController
             Auth::login($user);
 
             // Redirect to Dashboard
-                header("Location:http://localhost/laptofy_MVC/public/dashboard");
+                header("Location:/laptofy_MVC/dashboard");
                 exit();
         } else {
 
             echo "<script>
                 alert('Email and Password required');
-                window.location='http://localhost/laptofy_MVC/public/login';
+                window.location='/laptofy_MVC/login';
                 </script>";
                 exit();
         }
@@ -66,7 +62,7 @@ class AuthController
 
         Auth::logout();
 
-        header("Location: http://localhost/laptofy_MVC/public/login");
+        header("Location: /localhost/laptofy_MVC/login");
         exit();
     }
 }

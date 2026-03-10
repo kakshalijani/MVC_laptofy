@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/Auth.php';
+
 class Router
 {
     public function route()
@@ -8,15 +10,14 @@ class Router
             session_start();
         }
 
-        // Controller and action from query params set by .htaccess
+        // Get controller & action from query params
         $controller = $_GET['controller'] ?? DEFAULT_CONTROLLER;
         $action     = $_GET['action'] ?? DEFAULT_ACTION;
 
-        // Sanitize for safety
+        // Sanitize
         $controller = preg_replace('/[^a-zA-Z0-9]/', '', $controller);
         $action     = preg_replace('/[^a-zA-Z0-9]/', '', $action);
 
-        // Build controller class name
         $controllerClass = ucfirst($controller) . 'Controller';
         $controllerFile  = __DIR__ . '/../controllers/' . $controllerClass . '.php';
 
@@ -30,13 +31,20 @@ class Router
             die("Controller class not found: " . $controllerClass);
         }
 
+        // Instantiate controller
         $controllerObject = new $controllerClass();
 
+        // Safety net: protect admin pages
+        $protectedControllers = ['DashboardController', 'ProductController', 'BrandController', 'UserController', 'ProfileController'];
+        if (in_array($controllerClass, $protectedControllers)) {
+            Auth::requireLogin();
+        }
+
+        // Call action
         if (!method_exists($controllerObject, $action)) {
             die("Action not found: " . $action);
         }
 
-        // Call the action method
         $controllerObject->$action();
     }
 }

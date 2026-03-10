@@ -5,6 +5,19 @@ require_once __DIR__ . '/../models/User.php';
 class ProfileController
 {
 
+    public function __construct()
+    {
+        // Start session first
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(!isset($_SESSION['user'])){
+            header("location: /laptofy_mvc/login");
+            exit();
+        }
+
+        $this->product = new Product();
+    }
     public function edit()
     {
         $view = __DIR__ . '/../views/profile/edit.php';

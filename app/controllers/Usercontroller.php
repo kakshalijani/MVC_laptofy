@@ -13,12 +13,12 @@ class UserController
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        if(!isset($_SESSION['user'])){
+            header("location: /laptofy_mvc/login");
+            exit();
+        }
 
-        // Protect routes
-        Auth::requireLogin();
-
-        // Load User Model
-        $this->userModel = new User();
+        $this->product = new Product();
     }
 
     // Show Profile Page
