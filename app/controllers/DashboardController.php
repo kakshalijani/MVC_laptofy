@@ -22,7 +22,6 @@ class DashboardController
         $totalBrands = $brandModel->getTotalBrands();
 
         $view = __DIR__ . '/../views/dashboard/index.php';
-
         require __DIR__ . '/../views/admin/layout.php';
     }
 }

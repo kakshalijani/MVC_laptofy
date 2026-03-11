@@ -1,12 +1,5 @@
 <?php
-
-//if(session_status() === PHP_SESSION_NONE) {
-    session_start();
-//}
-//if(!isset($_SESSION['user'])){
-    //header("location: /laptofy_mvc/login");
-    //exit();
-//}
+session_start();
 
 // Load Configuration
 require_once __DIR__ . '/../app/config/config.php';
