@@ -2,12 +2,12 @@
 
 require_once __DIR__ . '/../models/User.php';
 
+
 class ProfileController
 {
 
     public function __construct()
     {
-        // Start session first
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -16,7 +16,6 @@ class ProfileController
             exit();
         }
 
-        $this->product = new Product();
     }
     public function edit()
     {
@@ -37,7 +36,6 @@ class ProfileController
 
         $profile = $_SESSION['user']['profile'];
 
-        // Image Upload
         if(isset($_FILES['profile']) && $_FILES['profile']['name'] != "")
         {
             $fileName = time() . "_" . $_FILES['profile']['name'];
@@ -48,7 +46,6 @@ class ProfileController
             $profile = $fileName;
         }
 
-        // Password Update
         if(!empty($password))
         {
             $password = password_hash($password, PASSWORD_DEFAULT);

@@ -9,7 +9,6 @@ class BrandController
 
     public function __construct()
     {
-        // Start session first
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -18,22 +17,20 @@ class BrandController
             exit();
         }
 
-        $this->product = new Product();
+        $this->brand = new brand();
     }
-    // Show all brands
+
     public function index(): void
     {
         $brands = $this->brand->getAll();
         require __DIR__ . '/../views/brand/index.php';
     }
 
-    // Show create form
     public function create(): void
     {
         require __DIR__ . '/../views/brand/create.php';
     }
 
-    // Store brand
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -47,7 +44,6 @@ class BrandController
             die("Brand name is required");
         }
 
-        // Check duplicate brand
         if ($this->brand->brandExists($name)) {
             echo "<script>
             alert('Brand already exists');
@@ -56,7 +52,6 @@ class BrandController
             exit;
         }
 
-        // Upload images
         $images = [];
 
         if (!empty($_FILES['img']['name'][0])) {
@@ -91,7 +86,6 @@ class BrandController
         exit;
     }
 
-    // Edit brand
     public function edit(): void
     {
         $id = $_GET['id'] ?? null;
@@ -109,7 +103,6 @@ class BrandController
         require __DIR__ . '/../views/brand/edit.php';
     }
 
-    // Update brand
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -132,7 +125,6 @@ class BrandController
 
         $existingImages = !empty($brand['img']) ? explode(',', $brand['img']) : [];
 
-        // Delete selected images
         if (!empty($_POST['delete_img'])) {
 
             foreach ($_POST['delete_img'] as $img) {
@@ -147,7 +139,6 @@ class BrandController
             }
         }
 
-        // Upload new images
         if (!empty($_FILES['img']['name'][0])) {
 
             foreach ($_FILES['img']['tmp_name'] as $key => $tmp) {
@@ -178,7 +169,6 @@ class BrandController
         exit;
     }
 
-    // Show single brand
     public function show(): void
     {
         $id = $_GET['id'] ?? null;
@@ -196,7 +186,6 @@ class BrandController
         require __DIR__ . '/../views/brand/show.php';
     }
 
-    // Delete brand
     public function delete(): void
     {
         $id = $_GET['id'] ?? null;
@@ -211,7 +200,6 @@ class BrandController
             die("Brand not found");
         }
 
-        // Delete images
         if (!empty($brand['img'])) {
 
             foreach (explode(',', $brand['img']) as $img) {

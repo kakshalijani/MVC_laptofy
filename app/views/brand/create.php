@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form action="/laptofy_MVC/addbrand" method="POST" enctype="multipart/form-data">
+<form action="/laptofy_MVC/storebrand" method="POST" enctype="multipart/form-data">
     <table border="0" cellpadding="10" align="center">
         <tr>
             <th colspan="2" style="text-align:center;">Create New Brand</th>

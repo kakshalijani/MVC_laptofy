@@ -10,7 +10,6 @@ class ProductController
 
     public function __construct()
     {
-        // Start session first
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -22,14 +21,12 @@ class ProductController
         $this->product = new Product();
     }
 
-    // Show all products
     public function index(): void
     {
         $products = $this->product->getAll();
         require __DIR__ . '/../views/products/index.php';
     }
 
-    // Show create form
     public function create(): void
     {
         $brandModel = new Brand();
@@ -38,7 +35,6 @@ class ProductController
         require __DIR__ . '/../views/products/create.php';
     }
 
-    // Store new product
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -51,19 +47,20 @@ class ProductController
         $price       = floatval($_POST['price'] ?? 0);
         $status      = $_POST['status'] ?? 'active';
         $brand_id    = intval($_POST['brand_id'] ?? 0);
+        
 
         if (empty($name)) {
             die("Product name is required");
         }
 
-        // Check duplicate product
         if ($this->product->productExists($name)) {
-            echo "<script>alert('Product already exists!');</script>";
-            header("Location: /laptofy_MVC/addproduct");
+            echo "<script>
+            alert('Brand already exists');
+            window.location='/laptofy_MVC/addproduct';
+            </script>";
             exit;
         }
 
-        // Upload Images
         $images = [];
         $allowed = ['jpg','jpeg','png','webp'];
 
@@ -101,7 +98,6 @@ class ProductController
         exit;
     }
 
-    // Show edit form
     public function edit(): void
     {
         $id = intval($_GET['id'] ?? 0);
@@ -119,7 +115,6 @@ class ProductController
         require __DIR__ . '/../views/products/edit.php';
     }
 
-    // Update product
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -139,7 +134,6 @@ class ProductController
 
         $existingImages = !empty($oldData['img']) ? explode(',', $oldData['img']) : [];
 
-        // Delete selected images
         if (!empty($_POST['delete_img'])) {
 
             foreach ($_POST['delete_img'] as $deleteImg) {
@@ -154,7 +148,6 @@ class ProductController
             }
         }
 
-        // Upload new images
         $allowed = ['jpg','jpeg','png','webp'];
 
         if (!empty($_FILES['img']['name'][0])) {
@@ -192,7 +185,6 @@ class ProductController
         exit;
     }
 
-    // Delete product
     public function delete(): void
     {
         $id = intval($_GET['id'] ?? 0);
@@ -207,7 +199,6 @@ class ProductController
         exit;
     }
 
-    // View single product
     public function show(): void
     {
         $id = intval($_GET['id'] ?? 0);

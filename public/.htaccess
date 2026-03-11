@@ -30,6 +30,8 @@ RewriteRule ^editproduct/([0-9]+)$ index.php?controller=product&action=edit&id=$
 RewriteRule ^deleteproduct/([0-9]+)$ index.php?controller=product&action=delete&id=$1 [L,QSA,NC]
 RewriteRule ^viewproduct/([0-9]+)$ index.php?controller=product&action=show&id=$1 [L,QSA,NC]
 RewriteRule ^updateproduct$ index.php?controller=product&action=update [L,QSA,NC]
+RewriteRule ^storeproduct$ index.php?controller=product&action=store [L,QSA,NC]
+
 
 # Brands
 RewriteRule ^brandlist$ index.php?controller=brand&action=index [L,QSA,NC]
@@ -38,7 +40,7 @@ RewriteRule ^editbrand/([0-9]+)$ index.php?controller=brand&action=edit&id=$1 [L
 RewriteRule ^deletebrand/([0-9]+)$ index.php?controller=brand&action=delete&id=$1 [L,QSA,NC]
 RewriteRule ^viewbrand/([0-9]+)$ index.php?controller=brand&action=show&id=$1 [L,QSA,NC]
 RewriteRule ^updatebrand$ index.php?controller=brand&action=update [L,QSA,NC]
-RewriteRule ^storeproduct$ index.php?controller=product&action=store [L,QSA,NC]
+RewriteRule ^storebrand$ index.php?controller=brand&action=store [L,QSA,NC]
 
 # Default fallback
 RewriteRule ^$ index.php [L,QSA,NC]

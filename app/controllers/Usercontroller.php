@@ -9,7 +9,6 @@ class UserController
 
     public function __construct()
     {
-        // Start session first
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -21,7 +20,6 @@ class UserController
         $this->product = new Product();
     }
 
-    // Show Profile Page
     public function profile(): void
     {
         $userId = intval($_SESSION['user']['id'] ?? 0);
@@ -39,7 +37,6 @@ class UserController
         require __DIR__ . '/../views/user/profile.php';
     }
 
-    // Update Profile
     public function update(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -62,7 +59,6 @@ class UserController
 
         $profilePic = $_SESSION['user']['profile_pic'] ?? 'default.jpg';
 
-        // Image Upload
         if (!empty($_FILES['profile_pic']['name'])) {
 
             $allowed = ['jpg','jpeg','png','webp'];
@@ -83,7 +79,6 @@ class UserController
 
             if (move_uploaded_file($_FILES['profile_pic']['tmp_name'], $filePath)) {
 
-                // Delete old image
                 if ($profilePic !== 'default.jpg') {
 
                     $oldFile = $uploadDir . $profilePic;
@@ -97,7 +92,6 @@ class UserController
             }
         }
 
-        // Update Database
         $data = [
             'id' => $userId,
             'first_name' => $firstName,
@@ -107,7 +101,6 @@ class UserController
 
         if ($this->userModel->updateUserProfile($data)) {
 
-            // Update session
             $_SESSION['user']['first_name'] = $firstName;
             $_SESSION['user']['last_name'] = $lastName;
             $_SESSION['user']['profile_pic'] = $profilePic;

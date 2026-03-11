@@ -6,14 +6,11 @@ require_once __DIR__ . '/../core/Auth.php';
 class AuthController
 {
 
-    // Show Login Page
     public function login(): void
     {
         require __DIR__ . '/../views/auth/login.php';
     }
 
-
-    // Authenticate User
     public function authenticate(): void
     {
 
@@ -36,13 +33,10 @@ class AuthController
         $userModel = new User();
         $user = $userModel->getUserByEmail($email);
 
-        // Verify Password
         if ($user && password_verify($password, $user['password'])) {
 
-            // Login Session
             Auth::login($user);
 
-            // Redirect to Dashboard
                 header("Location:/laptofy_MVC/dashboard");
                 exit();
         } else {
@@ -55,8 +49,6 @@ class AuthController
         }
     }
 
-
-    // Logout
     public function logout(): void
     {
 
