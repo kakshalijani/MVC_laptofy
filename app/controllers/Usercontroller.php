@@ -111,4 +111,46 @@ class UserController
 
         die("Profile update failed");
     }
+    
+    public function getUserById($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+    public function updatePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: /laptofy_MVC/profile");
+            exit;
+        }
+
+        $userModel = new User();
+
+        $id = $_SESSION['user']['id'];
+
+        $old_password = $_POST['old_password'] ?? '';
+        $new_password = $_POST['new_password'] ?? '';
+
+        $user = $userModel->getUserById($id);
+
+        if (!password_verify($old_password, $user['password'])) {
+            echo "<script>alert('Old password is incorrect');window.history.back();</script>";
+            exit;
+        }
+
+        $hashedPassword = password_hash($new_password, PASSWORD_DEFAULT);
+
+        // Update password
+        $userModel->updatePassword($id, $hashedPassword);
+
+        echo "<script>alert('Password updated successfully');window.location='/laptofy_MVC/profile';</script>";
+    }
+    
 }

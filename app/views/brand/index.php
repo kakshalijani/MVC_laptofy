@@ -80,9 +80,7 @@
                 <button>View Products</button>
                 </a>
 
-                <a href="/laptofy_MVC/dashboard">
-                <button>Dashboard</button>
-                </a>
+                
 
             </td>
 

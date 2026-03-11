@@ -87,9 +87,6 @@
                 <button type="button">View Brands</button>
                 </a>
 
-                <a href="/laptofy_MVC/public/dashboard">
-                <button type="button">Go to Dashboard</button>
-                </a>
             </td>
         </tr>
     </tfoot>

@@ -22,7 +22,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="/laptofy_MVC/dashboard">Dashboard</a>
         <a href="/laptofy_MVC/addproduct">Add Product</a>
         <a href="/laptofy_MVC/addbrand">Add Brand</a>
-        <a href="/laptofy_MVC/login">Logout</a>
+        <a href="/laptofy_MVC/logout">Logout</a>
     </div>
 
     <div class="main">

@@ -2,7 +2,6 @@
 
 class Auth
 {
-    // Start session automatically
     private static function startSession()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -10,25 +9,22 @@ class Auth
         }
     }
 
-    // Check if user is logged in
     public static function check(): bool
     {
         self::startSession();
         return isset($_SESSION['user']);
     }
 
-    // Require login for protected pages
     public static function requireLogin(): void
     {
-        self::startSession();
+        //self::startSession();
 
         if (!isset($_SESSION['user'])) {
-            header("Location: /laptofy_MVC/public/index.php?controller=auth&action=login");
+            header("Location: /laptofy_MVC/login");
             exit();
         }
     }
 
-    // Login user
     public static function login(array $user): void
     {
         self::startSession();
@@ -42,20 +38,18 @@ class Auth
         ];
     }
 
-    // Logout user
     public static function logout(): void
     {
-        self::startSession();
+        //self::startSession();
 
         $_SESSION = [];
 
         session_destroy();
 
-        header("Location: /laptofy_MVC/public/index.php?controller=auth&action=login");
+        header("Location: /laptofy_MVC/login");
         exit();
     }
 
-    // Get logged-in user
     public static function user()
     {
         self::startSession();

@@ -16,7 +16,6 @@ class Product
         }
     }
 
-    //Get all products
     public function getAll()
     {
         $sql = "SELECT p.*, b.name AS brand_name
@@ -42,7 +41,6 @@ class Product
         return $row['total'];
     }
     
-    //Get product by ID
     public function getById($id)
     {
         $sql = "SELECT p.*, b.name AS brand_name
@@ -66,7 +64,6 @@ class Product
         return $result;
     }
 
-    //Insert product
     public function insert($name, $description, $price, $status, $brand_id, $img)
     {
         $sql = "INSERT INTO laptofy (name, description, price, status, brand_id, img)
@@ -95,7 +92,6 @@ class Product
         return $success;
     }
 
-    //Check if product exists
     public function productExists($name)
     {
         $sql = "SELECT id FROM laptofy WHERE name = ?";
@@ -118,7 +114,6 @@ class Product
         return $exists;
     }
 
-    //Update product
     public function update($id, $name, $description, $price, $status, $img, $brand_id)
     {
         $sql = "UPDATE laptofy 
@@ -149,7 +144,6 @@ class Product
         return $success;
     }
 
-    //Delete product
     public function delete($id)
     {
         $sql = "DELETE FROM laptofy WHERE id = ?";

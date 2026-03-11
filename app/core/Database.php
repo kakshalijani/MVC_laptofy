@@ -18,7 +18,6 @@ class Database
             $this->dbname
         );
 
-        // Check connection
         if ($this->conn->connect_error) {
             die("Database Connection Failed: " . $this->conn->connect_error);
         }

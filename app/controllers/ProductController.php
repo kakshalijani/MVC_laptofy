@@ -10,21 +10,17 @@ class ProductController
 
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        if(!isset($_SESSION['user'])){
-            header("location: /laptofy_mvc/login");
-            exit();
-        }
-
+        Auth::requireLogin();
         $this->product = new Product();
+        
     }
 
     public function index(): void
     {
         $products = $this->product->getAll();
-        require __DIR__ . '/../views/products/index.php';
+        $view = __DIR__ . '/../views/products/index.php';
+        require __DIR__ . '/../views/admin/layout.php';
+        
     }
 
     public function create(): void
@@ -32,7 +28,8 @@ class ProductController
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
 
-        require __DIR__ . '/../views/products/create.php';
+         $view =__DIR__ . '/../views/products/create.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 
     public function store(): void
@@ -112,7 +109,8 @@ class ProductController
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
 
-        require __DIR__ . '/../views/products/edit.php';
+        $view=__DIR__ . '/../views/products/edit.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 
     public function update(): void
@@ -210,6 +208,7 @@ class ProductController
         $result = $this->product->getById($id);
         $product = $result->fetch_assoc();
 
-        require __DIR__ . '/../views/products/show.php';
+        $view=__DIR__ . '/../views/products/show.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 }

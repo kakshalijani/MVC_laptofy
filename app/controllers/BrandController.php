@@ -23,12 +23,15 @@ class BrandController
     public function index(): void
     {
         $brands = $this->brand->getAll();
-        require __DIR__ . '/../views/brand/index.php';
+        $view=__DIR__ . '/../views/brand/index.php';
+        require __DIR__ . '/../views/admin/layout.php';
+
     }
 
     public function create(): void
     {
-        require __DIR__ . '/../views/brand/create.php';
+        $view =__DIR__ . '/../views/brand/create.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 
     public function store(): void
@@ -100,7 +103,8 @@ class BrandController
             die("Brand not found");
         }
 
-        require __DIR__ . '/../views/brand/edit.php';
+        $view=__DIR__ . '/../views/brand/edit.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 
     public function update(): void
@@ -183,7 +187,8 @@ class BrandController
             die("Brand not found");
         }
 
-        require __DIR__ . '/../views/brand/show.php';
+        $view=__DIR__ . '/../views/brand/show.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
 
     public function delete(): void

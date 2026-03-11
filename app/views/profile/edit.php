@@ -34,11 +34,16 @@
                 <input type="email" name="email" value="<?php echo $_SESSION['user']['email']; ?>" required>
             </td>
         </tr>
-
+        <tr>
+            <td><lable>old password</lable></td>
+            <td>
+                <input type="password" name="old_password">
+            </td>
+        </tr>    
         <tr>
             <td><label>New Password</label></td>
             <td>
-                <input type="password" name="password">
+                <input type="password" name="new_password">
             </td>
         </tr>
 
