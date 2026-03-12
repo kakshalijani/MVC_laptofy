@@ -11,6 +11,11 @@ RewriteRule ^ - [L]
 # Friendly URLs mapping
 # --------------------------------------
 
+#User
+RewriteRule ^home/?$ index.php?controller=home&action=index [L,QSA,NC]
+RewriteRule ^show/([0-9]+)/?$ index.php?controller=home&action=show&id=$1 [L,QSA,NC]
+RewriteRule ^filter/?$ index.php?controller=home&action=filter [L,QSA,NC]
+
 # Dashboard
 RewriteRule ^dashboard$ index.php?controller=dashboard&action=index [L,QSA,NC]
 

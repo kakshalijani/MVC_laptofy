@@ -33,10 +33,11 @@ class Product
     }
     public function getTotalProducts()
     {
-        $sql = "SELECT COUNT(*) AS total FROM laptofy";
-        $result = mysqli_query($this->conn, $sql);
+        $sql = "SELECT COUNT(*) as total FROM laptofy";
 
-        $row = mysqli_fetch_assoc($result);
+        $result = $this->conn->query($sql);
+
+        $row = $result->fetch_assoc();
 
         return $row['total'];
     }
@@ -58,10 +59,11 @@ class Product
         $stmt->execute();
 
         $result = $stmt->get_result();
+        
 
         $stmt->close();
 
-        return $result;
+        return $result->fetch_assoc(); 
     }
 
     public function insert($name, $description, $price, $status, $brand_id, $img)
@@ -161,5 +163,76 @@ class Product
         $stmt->close();
 
         return $success;
+    }
+    public function getByBrand($brand_id)
+    {
+        $sql = "SELECT p.*, b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.brand_id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Prepare Failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $brand_id);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+    public function search($keyword)
+    {
+        $keyword = "%".$keyword."%";
+
+        $sql = "SELECT p.*, b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.name LIKE ? 
+            OR b.name LIKE ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Prepare Failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ss", $keyword, $keyword);
+
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+    public function getActiveProducts()
+    {
+        $sql = "SELECT p.*, b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.status = 'active'
+            ORDER BY p.id ASC";
+
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+    public function filterProducts($keyword, $brand_id)
+    {
+        $sql = "SELECT p.*, b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE 1";
+
+        if ($keyword != "") {
+            $sql .= " AND p.name LIKE '%$keyword%'";
+        }
+
+        if ($brand_id != "") {
+            $sql .= " AND p.brand_id = '$brand_id'";
+        }
+
+        $result = $this->conn->query($sql);
+
+        return $result;
     }
 }

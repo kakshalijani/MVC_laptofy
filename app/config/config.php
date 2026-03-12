@@ -16,8 +16,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'laptofy');
 
 //DEFAULT ROUTE
-define('DEFAULT_CONTROLLER', 'auth');
-define('DEFAULT_ACTION', 'login');
+define('DEFAULT_CONTROLLER', 'home');
+define('DEFAULT_ACTION', 'index');
 
 //SESSION START
 if (session_status() === PHP_SESSION_NONE) {

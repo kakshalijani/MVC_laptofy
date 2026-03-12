@@ -50,8 +50,10 @@ class Brand
     public function getTotalBrands()
     {
         $sql = "SELECT COUNT(*) as total FROM brand";
-        $result = mysqli_query($this->conn,$sql);
-        $row = mysqli_fetch_assoc($result);
+
+        $result = $this->conn->query($sql);
+
+        $row = $result->fetch_assoc();
 
         return $row['total'];
     }

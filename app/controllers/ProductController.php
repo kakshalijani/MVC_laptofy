@@ -96,22 +96,21 @@ class ProductController
     }
 
     public function edit(): void
-    {
-        $id = intval($_GET['id'] ?? 0);
+{
+    $id = intval($_GET['id'] ?? 0);
 
-        if (!$id) {
-            die("Invalid Product ID");
-        }
-
-        $result = $this->product->getById($id);
-        $product = $result->fetch_assoc();
-
-        $brandModel = new Brand();
-        $brands = $brandModel->getAll();
-
-        $view=__DIR__ . '/../views/products/edit.php';
-        require __DIR__ . '/../views/admin/layout.php';
+    if (!$id) {
+        die("Invalid Product ID");
     }
+
+    $product = $this->product->getById($id);   // get product as array
+
+    $brandModel = new Brand();
+    $brands = $brandModel->getAll();
+
+    $view = __DIR__ . '/../views/products/edit.php';
+    require __DIR__ . '/../views/admin/layout.php';
+}
 
     public function update(): void
     {
@@ -127,8 +126,7 @@ class ProductController
         $status      = $_POST['status'] ?? 'active';
         $brand_id    = intval($_POST['brand_id'] ?? 0);
 
-        $oldResult = $this->product->getById($id);
-        $oldData = $oldResult->fetch_assoc();
+        $oldData = $this->product->getById($id);
 
         $existingImages = !empty($oldData['img']) ? explode(',', $oldData['img']) : [];
 
@@ -211,4 +209,5 @@ class ProductController
         $view=__DIR__ . '/../views/products/show.php';
         require __DIR__ . '/../views/admin/layout.php';
     }
+    
 }
