@@ -74,5 +74,4 @@ class User
 
         return mysqli_query($this->conn,$sql);
     }
-    
 }

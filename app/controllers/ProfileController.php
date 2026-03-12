@@ -31,7 +31,7 @@ class ProfileController
 
         $user = $userModel->getUserById($id);
 
-        $password = $user['password']; // keep old password
+        $password = $user['password'];
 
         if(!empty($old_password) && !empty($new_password)){
 

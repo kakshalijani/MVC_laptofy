@@ -1,5 +1,4 @@
 <?php
-
 class Auth
 {
     private static function startSession()
@@ -11,14 +10,11 @@ class Auth
 
     public static function check(): bool
     {
-        self::startSession();
         return isset($_SESSION['user']);
     }
 
     public static function requireLogin(): void
     {
-        //self::startSession();
-
         if (!isset($_SESSION['user'])) {
             header("Location: /laptofy_MVC/login");
             exit();
@@ -27,7 +23,6 @@ class Auth
 
     public static function login(array $user): void
     {
-        self::startSession();
 
         $_SESSION['user'] = [
             'id' => $user['id'],
@@ -40,7 +35,6 @@ class Auth
 
     public static function logout(): void
     {
-        //self::startSession();
 
         $_SESSION = [];
 
@@ -50,9 +44,4 @@ class Auth
         exit();
     }
 
-    public static function user()
-    {
-        self::startSession();
-        return $_SESSION['user'] ?? null;
-    }
 }
