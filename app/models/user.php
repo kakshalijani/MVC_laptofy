@@ -62,16 +62,27 @@ class User
         return $user;
     }
 
-   public function updateUser($id,$first_name,$last_name,$email,$password,$profile)
-    {
-        $sql = "UPDATE user 
-                SET first_name='$first_name',
-                last_name='$last_name',
-                email='$email',
-                password='$password',
-                profile='$profile'
-                WHERE id='$id'";
+   public function updateUser($id, $first_name, $last_name, $email, $password, $profile)
+{
+    // Use placeholders instead of injecting variables
+    $sql = "UPDATE user 
+            SET first_name=?, last_name=?, email=?, password=?, profile=?
+            WHERE id=?";
 
-        return mysqli_query($this->conn,$sql);
+    $stmt = $this->conn->prepare($sql);
+
+    if(!$stmt){
+        die("Prepare failed: ".$this->conn->error);
     }
+
+    // Bind parameters (s = string, i = integer)
+    $stmt->bind_param("sssssi", $first_name, $last_name, $email, $password, $profile, $id);
+
+    // Execute statement
+    $success = $stmt->execute();
+
+    $stmt->close();
+
+    return $success;
+}
 }

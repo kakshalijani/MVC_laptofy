@@ -23,23 +23,28 @@ class Product
                 LEFT JOIN brand b ON p.brand_id = b.brand_id
                 ORDER BY p.id ASC";
 
-        $result = $this->conn->query($sql);
-
-        if (!$result) {
-            die("Query Failed: " . $this->conn->error);
+        $stmt=$this->conn->prepare($sql);
+        if(!$stmt){
+            die("Prepare Failed: ".$this->conn->error);
         }
-
-        return $result;
+        $stmt->execute();
+        $result=$stmt->get_result();
+        $stmt->close();
+        return $result;    
     }
     public function getTotalProducts()
     {
         $sql = "SELECT COUNT(*) as total FROM laptofy";
-
-        $result = $this->conn->query($sql);
-
-        $row = $result->fetch_assoc();
-
+        $stmt=$this->conn->prepare($sql);
+        if(!$stmt){
+            die("Prepare Failed: ".$this->conn->error);
+        }
+        $stmt->execute();
+        $result=$stmt->get_result();
+        $row=$result->fetch_assoc();
+        $stmt->close();
         return $row['total'];
+        
     }
     
     public function getById($id)

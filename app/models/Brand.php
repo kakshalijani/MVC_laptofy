@@ -19,13 +19,15 @@ class Brand
     public function getAll()
     {
         $sql = "SELECT * FROM brand ORDER BY brand_id ASC";
-        $result = $this->conn->query($sql);
-
-        if (!$result) {
-            die("Query Failed: " . $this->conn->error);
+        $stmt=$this->conn->prepare($sql);
+        
+        if(!$stmt){
+            die("Prepare Failed: ".$this->conn->error);
         }
-
-        return $result; 
+        $stmt->execute();
+        $result=$stmt->get_result();
+        $stmt->close();
+        return $result;
     }
 
     public function getById($id)
@@ -51,10 +53,14 @@ class Brand
     {
         $sql = "SELECT COUNT(*) as total FROM brand";
 
-        $result = $this->conn->query($sql);
-
+        $stmt=$this->conn->prepare($sql);
+        if(!$stmt){
+            die("Prepare Failed: ".$this->conn->error);
+        }
+        $stmt->execute();
+        $result=$stmt->get_result();
         $row = $result->fetch_assoc();
-
+        $stmt->close();
         return $row['total'];
     }
 
