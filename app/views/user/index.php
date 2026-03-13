@@ -38,7 +38,17 @@
             </div>
         <?php endwhile; ?>
     </div>
+    <div class="pagination">
 
+<?php for($i=1;$i<=$totalPages;$i++): ?>
+
+<a href="/laptofy_MVC/public/Home?page=<?= $i ?>">
+<?= $i ?>
+</a>
+
+<?php endfor; ?>
+
+</div>
 </div>
 
 <!-- AJAX FILTER JS -->

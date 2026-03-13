@@ -3,25 +3,29 @@ function loadProducts(){
 var keyword = document.getElementById("search").value;
 var brand_id = document.getElementById("brandFilter").value;
 
-var xhr = new XMLHttpRequest();
-
-xhr.open(
-    "GET",
-    "/laptofy_MVC/public/filter?keyword="+keyword+"&brand_id="+brand_id,
-    true
-);
-
-xhr.onload = function(){
-
-if(xhr.status == 200){
-
-document.getElementById("productContainer").innerHTML = xhr.responseText;
-
+/* if search and filter are empty → reload page */
+if(keyword === "" && brand_id === ""){
+window.location.href = "/laptofy_MVC/public/Home";
+return;
 }
 
-};
+fetch("/laptofy_MVC/public/filter?keyword="+keyword+"&brand_id="+brand_id)
 
-xhr.send();
+.then(function(response){
+return response.text();
+})
+
+.then(function(data){
+
+document.getElementById("productContainer").innerHTML = data;
+
+/* hide pagination */
+var pagination = document.getElementById("pagination");
+if(pagination){
+pagination.style.display = "none";
+}
+
+});
 
 }
 

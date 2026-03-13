@@ -141,3 +141,36 @@
                 width: 90%;
             }
         }
+        /* PAGINATION CONTAINER */
+.pagination{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* PAGE LINKS */
+.pagination a{
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #333;
+    background: #fff;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.pagination a:hover{
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+/* ACTIVE PAGE (optional if you add class) */
+.pagination a.active{
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
