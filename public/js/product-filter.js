@@ -18,12 +18,6 @@ return response.text();
 
 document.getElementById("productContainer").innerHTML = data;
 
-//hide pagination 
-var pagination = document.getElementById("pagination");
-if(pagination){
-pagination.style.display = "none";
-}
-
 });
 
 }
