@@ -47,6 +47,10 @@
                 <td>₹<?= htmlspecialchars($product['price']); ?></td>
             </tr>
             <tr>
+                <th>brand</th>
+                <td><?= htmlspecialchars($product['brand_name']); ?></td>
+            </tr>
+            <tr>
                 <td colspan="2" align="center">
                 <a href="/laptofy_MVC/public/home"><button>Home</button></a>
                 </td>
