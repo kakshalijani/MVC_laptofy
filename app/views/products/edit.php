@@ -13,7 +13,6 @@
       method="POST"
       enctype="multipart/form-data">
 
-    <!-- Hidden Product ID -->
     <input type="hidden" name="id" value="<?= (int)$product['id']; ?>">
 
     <table border="1" align="center" cellpadding="10">

@@ -241,15 +241,15 @@ class Product
         return $result;
     }
     public function getProductsPaginated($limit,$offset)
-{
-    $sql = "SELECT * FROM laptofy WHERE status=1 LIMIT ? OFFSET ?";
+    {
+        $sql = "SELECT * FROM laptofy WHERE status=1 LIMIT ? OFFSET ?";
 
-    $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
 
-    $stmt->bind_param("ii",$limit,$offset);
+        $stmt->bind_param("ii",$limit,$offset);
 
-    $stmt->execute();
+        $stmt->execute();
 
-    return $stmt->get_result();
-}
+        return $stmt->get_result();
+    }
 }

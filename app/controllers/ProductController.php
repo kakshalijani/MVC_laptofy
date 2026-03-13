@@ -103,7 +103,7 @@ class ProductController
         die("Invalid Product ID");
     }
 
-    $product = $this->product->getById($id);   // get product as array
+    $product = $this->product->getById($id);   
 
     $brandModel = new Brand();
     $brands = $brandModel->getAll();

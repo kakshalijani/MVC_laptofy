@@ -9,25 +9,18 @@ class HomeController {
         $productModel = new Product();
         $brandModel = new Brand();
 
-        // Pagination settings
         $limit = 5;
 
-        // Current page
         $page = $_GET['page'] ?? 1;
 
-        // Offset calculation
         $offset = ($page - 1) * $limit;
 
-        // Get products with limit
         $products = $productModel->getProductsPaginated($limit,$offset);
 
-        // Get total products
         $totalProducts = $productModel->getTotalProducts();
 
-        // Total pages
         $totalPages = ceil($totalProducts / $limit);
 
-        // Get brands
         $brands = $brandModel->getAll();
 
         require __DIR__.'/../views/user/index.php';
@@ -53,6 +46,6 @@ class HomeController {
 
         $products = $productModel->filterProducts($keyword,$brand_id);
 
-        require __DIR__ . '/../views/products/product_cards.php';
+        require __DIR__ . '/../views/user/product_cards.php';
     }
 }

@@ -64,7 +64,6 @@ class User
 
    public function updateUser($id, $first_name, $last_name, $email, $password, $profile)
 {
-    // Use placeholders instead of injecting variables
     $sql = "UPDATE user 
             SET first_name=?, last_name=?, email=?, password=?, profile=?
             WHERE id=?";
@@ -75,10 +74,8 @@ class User
         die("Prepare failed: ".$this->conn->error);
     }
 
-    // Bind parameters (s = string, i = integer)
     $stmt->bind_param("sssssi", $first_name, $last_name, $email, $password, $profile, $id);
 
-    // Execute statement
     $success = $stmt->execute();
 
     $stmt->close();
