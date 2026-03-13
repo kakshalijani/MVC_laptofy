@@ -31,6 +31,7 @@ class HomeController {
         $id = $_GET['id'];
 
         $productModel = new Product();
+        
 
         $product = $productModel->getById($id);
 

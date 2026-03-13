@@ -203,8 +203,7 @@ class ProductController
             die("Invalid Product ID");
         }
 
-        $result = $this->product->getById($id);
-        $product = $result->fetch_assoc();
+        $product = $this->product->getById($id);
 
         $view=__DIR__ . '/../views/products/show.php';
         require __DIR__ . '/../views/admin/layout.php';

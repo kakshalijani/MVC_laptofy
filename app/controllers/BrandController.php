@@ -176,10 +176,6 @@ class BrandController
 
         $brand = $this->brand->getById((int)$id);
 
-        if (!$brand) {
-            die("Brand not found");
-        }
-
         $view=__DIR__ . '/../views/brand/show.php';
         require __DIR__ . '/../views/admin/layout.php';
     }
@@ -194,21 +190,6 @@ class BrandController
 
         $brand = $this->brand->getById((int)$id);
 
-        if (!$brand) {
-            die("Brand not found");
-        }
-
-        if (!empty($brand['img'])) {
-
-            foreach (explode(',', $brand['img']) as $img) {
-
-                $path = __DIR__ . '/../../public/img/brand/' . trim($img);
-
-                if (file_exists($path)) {
-                    unlink($path);
-                }
-            }
-        }
 
         $this->brand->delete((int)$id);
 

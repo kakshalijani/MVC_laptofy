@@ -22,19 +22,19 @@
             <tr>
                 <th>Images</th>
                 <td>
-                <?php if (!empty($product['img'])): ?>
-                <?php
-                $images = explode(',', $product['img']);
-                foreach ($images as $img):
-                ?>
+                    <?php if (!empty($product['img'])): ?>
+                    <?php
+                    $images = explode(',', $product['img']);
+                    foreach ($images as $img):
+                    ?>
 
-                <img src="/laptofy_MVC/public/img/product/<?= htmlspecialchars($img); ?>"
-                width="120"
-                height="120"
-                style="border-radius:8px; object-fit:cover; margin-right:8px; border:1px solid #ccc;">
+                    <img src="/laptofy_MVC/public/img/product/<?= htmlspecialchars($img); ?>"
+                    width="120"
+                    height="120"
+                    style="border-radius:8px; object-fit:cover; margin-right:8px; border:1px solid #ccc;">
 
-                <?php endforeach; ?>
-                <?php else: ?>
+                    <?php endforeach; ?>
+                    <?php else: ?>
 
                 <em>No Image Available</em>
 
