@@ -28,7 +28,7 @@ class ProductController
         $brandModel = new Brand();
         $brands = $brandModel->getAll();
 
-         $view =__DIR__ . '/../views/products/create.php';
+        $view =__DIR__ . '/../views/products/create.php';
         require __DIR__ . '/../views/admin/layout.php';
     }
 
@@ -96,21 +96,21 @@ class ProductController
     }
 
     public function edit(): void
-{
-    $id = intval($_GET['id'] ?? 0);
+    {
+        $id = intval($_GET['id'] ?? 0);
 
-    if (!$id) {
-        die("Invalid Product ID");
+        if (!$id) {
+            die("Invalid Product ID");
+        }
+
+        $product = $this->product->getById($id);   
+
+        $brandModel = new Brand();
+        $brands = $brandModel->getAll();
+
+        $view = __DIR__ . '/../views/products/edit.php';
+        require __DIR__ . '/../views/admin/layout.php';
     }
-
-    $product = $this->product->getById($id);   
-
-    $brandModel = new Brand();
-    $brands = $brandModel->getAll();
-
-    $view = __DIR__ . '/../views/products/edit.php';
-    require __DIR__ . '/../views/admin/layout.php';
-}
 
     public function update(): void
     {
