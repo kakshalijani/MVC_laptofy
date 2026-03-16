@@ -35,7 +35,7 @@
             </td>
         </tr>
         <tr>
-            <td><lable>old password</lable></td>
+            <td><lable>Old Password</lable></td>
             <td>
                 <input type="password" name="old_password">
             </td>

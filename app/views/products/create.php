@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                     <th colspan="2" align="center">
-                        <h1>LAPTOFY – ADD PRODUCT</h1>
+                        <h1>LAPTOFY - ADD PRODUCT</h1>
                     </th>
                 </tr>
             </thead>
