@@ -4,26 +4,26 @@ var keyword = document.getElementById("search").value;
 var brand_id = document.getElementById("brandFilter").value;
 
 if(keyword === "" && brand_id === ""){
-window.location.href = "/laptofy_MVC/public/Home";
-return;
+    window.location.href = "/laptofy_MVC/public/Home";
+    return;
 }
 
 fetch("/laptofy_MVC/public/filter?keyword="+keyword+"&brand_id="+brand_id)
 
 .then(function(response){
-return response.text();
+    return response.text();
 })
 
 .then(function(data){
 
-document.getElementById("productContainer").innerHTML = data;
+    document.getElementById("productContainer").innerHTML = data;
 
 });
 
 }
 
 // Search
-document.getElementById("search").addEventListener("keyup", loadProducts);
+document.getElementById("searchBtn").addEventListener("click", loadProducts);
 
 //Brand Filter 
 document.getElementById("brandFilter").addEventListener("change", loadProducts);

@@ -148,6 +148,18 @@
     justify-content: center;
     gap: 8px;
 }
+button,
+input[type="submit"] {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+}
 
 /* PAGE LINKS */
 .pagination a{

@@ -9,7 +9,7 @@ class HomeController {
         $productModel = new Product();
         $brandModel = new Brand();
 
-        $limit = 5;
+        $limit = 4;
 
         $page = $_GET['page'] ?? 1;
 
@@ -49,4 +49,5 @@ class HomeController {
 
         require __DIR__ . '/../views/user/product_cards.php';
     }
+   
 }

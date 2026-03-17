@@ -11,10 +11,9 @@
 
     <h2>All Products</h2>
 
-    <!-- SEARCH -->
     <input type="text" id="search" placeholder="Search product">
-
-    <!-- BRAND FILTER -->
+    <button  id="searchBtn" onclick="loadProducts()">search</button>
+    
     <select id="brandFilter">
         <option value="">All Brands</option>
         <?php while($brand = $brands->fetch_assoc()): ?>
@@ -22,7 +21,8 @@
         <?php endwhile; ?>
     </select>
 
-    <!-- PRODUCT LIST -->
+    <a href="/laptofy_MVC/public/home"><button>reset</button></a>
+    
     <div id="productContainer">
         <?php while($product = $products->fetch_assoc()): ?>
             <?php $images = explode(',', $product['img']); ?>
@@ -40,18 +40,17 @@
     </div>
     <div class="pagination">
 
-<?php for($i=1;$i<=$totalPages;$i++): ?>
+            <?php for($i=1;$i<=$totalPages;$i++): ?>
 
-<a href="/laptofy_MVC/public/Home?page=<?= $i ?>">
-<?= $i ?>
-</a>
+            <a href="/laptofy_MVC/public/Home?page=<?= $i ?>">
+            <?= $i ?>
+            </a>
 
-<?php endfor; ?>
+            <?php endfor; ?>
 
+    </div>
 </div>
-</div>
 
-<!-- AJAX FILTER JS -->
 <script src="/laptofy_MVC/public/js/product-filter.js"></script>
 
 </body>
