@@ -195,7 +195,7 @@ class Product
             FROM laptofy p
             LEFT JOIN brand b ON p.brand_id = b.brand_id
             WHERE p.name LIKE ? 
-            OR b.name LIKE ?";
+            OR b.name LIKE ? and p.status = 1";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -226,7 +226,7 @@ class Product
         $sql = "SELECT p.*, b.name AS brand_name
             FROM laptofy p
             LEFT JOIN brand b ON p.brand_id = b.brand_id
-            WHERE 1";
+            WHERE p.status = 1";
 
         if ($keyword != "") {
             $sql .= " AND p.name LIKE '%$keyword%'";
@@ -242,7 +242,7 @@ class Product
     }
     public function getProductsPaginated($limit,$offset)
     {
-        $sql = "SELECT * FROM laptofy WHERE status=1 LIMIT ? OFFSET ?";
+        $sql = "SELECT * FROM laptofy WHERE status='active' LIMIT ? OFFSET ?";
 
         $stmt = $this->conn->prepare($sql);
 
