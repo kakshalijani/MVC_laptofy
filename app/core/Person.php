@@ -10,13 +10,11 @@ class Person
 
     public static function check(): bool
     {
-        //self::startSession(); 
         return isset($_SESSION['Person']);
     }
 
     public static function requireLogin(): void
     {
-        //self::startSession(); 
         if(!isset($_SESSION['Person'])){
             header("Location: /laptofy_MVC/public/person-login");
             exit();
@@ -25,7 +23,6 @@ class Person
 
     public static function login(array $person): void
     {
-        //self::startSession(); 
         $_SESSION['Person'] = [
             'id'       => $person['id'],
             'email'    => $person['email'],
@@ -35,7 +32,6 @@ class Person
 
     public static function logout(): void
     {
-        //self::startSession();
         $_SESSION = [];
         session_destroy();
 

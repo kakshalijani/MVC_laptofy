@@ -27,7 +27,7 @@
 <div id="filterPagination" style="display:none;">
     <?php for($i = 1; $i <= $totalPages; $i++): ?>
 
-        <?php if(isset($price_range) && $price_range != ''): ?>
+        <?php if(isset($price) && $price != ''): ?>
             <a href="#"
                onclick="loadByPrice(<?= $i ?>); return false;"
                class="<?= $i === $page ? 'active' : '' ?>">
