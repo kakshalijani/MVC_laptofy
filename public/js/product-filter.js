@@ -63,12 +63,6 @@ function loadByPrice(page = 1){
     });
 }
 
-function resetFilters(){
-    document.getElementById("search").value = "";
-    document.getElementById("brandFilter").value = "";
-    document.getElementById("priceFilter").value = "";
-    window.location.href = "/laptofy_MVC/public/Home";
-}
 
 // Search button
 document.getElementById("searchBtn").addEventListener("click", function(){
