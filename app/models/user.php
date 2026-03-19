@@ -62,24 +62,24 @@ class User
         return $user;
     }
 
-   public function updateUser($id, $first_name, $last_name, $email, $password, $profile)
-{
-    $sql = "UPDATE user 
-            SET first_name=?, last_name=?, email=?, password=?, profile=?
-            WHERE id=?";
+    public function updateUser($id, $first_name, $last_name, $email, $password, $profile)
+    {
+        $sql = "UPDATE user 
+                SET first_name=?, last_name=?, email=?, password=?, profile=?
+                WHERE id=?";
 
-    $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
 
-    if(!$stmt){
-        die("Prepare failed: ".$this->conn->error);
+        if(!$stmt){
+            die("Prepare failed: ".$this->conn->error);
+        }
+
+        $stmt->bind_param("sssssi", $first_name, $last_name, $email, $password, $profile, $id);
+
+        $success = $stmt->execute();
+
+        $stmt->close();
+
+        return $success;
     }
-
-    $stmt->bind_param("sssssi", $first_name, $last_name, $email, $password, $profile, $id);
-
-    $success = $stmt->execute();
-
-    $stmt->close();
-
-    return $success;
-}
 }

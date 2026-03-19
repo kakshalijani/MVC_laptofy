@@ -11,10 +11,11 @@ RewriteRule ^ - [L]
 # Friendly URLs mapping
 # --------------------------------------
 
-#User
+# User
 RewriteRule ^home/?$ index.php?controller=home&action=index [L,QSA,NC]
 RewriteRule ^show/([0-9]+)/?$ index.php?controller=home&action=show&id=$1 [L,QSA,NC]
 RewriteRule ^filter/?$ index.php?controller=home&action=filter [L,QSA,NC]
+RewriteRule ^price-filter/?$ index.php?controller=home&action=priceFilter [L,QSA,NC]
 
 # Dashboard
 RewriteRule ^dashboard$ index.php?controller=dashboard&action=index [L,QSA,NC]
@@ -23,10 +24,22 @@ RewriteRule ^dashboard$ index.php?controller=dashboard&action=index [L,QSA,NC]
 RewriteRule ^profile$ index.php?controller=profile&action=edit [L,QSA,NC]
 RewriteRule ^profileupdate$ index.php?controller=profile&action=update [L,QSA,NC]
 
-# Auth
+# Admin Auth
 RewriteRule ^login$ index.php?controller=auth&action=login [L,QSA,NC]
 RewriteRule ^logout$ index.php?controller=auth&action=logout [L,QSA,NC]
 RewriteRule ^authenticate$ index.php?controller=auth&action=authenticate [L,QSA,NC]
+
+# Person Auth (customer)
+RewriteRule ^person-register$ index.php?controller=person&action=registerView [L,QSA,NC]
+RewriteRule ^person-register-store$ index.php?controller=person&action=register [L,QSA,NC]
+RewriteRule ^person-login$ index.php?controller=person&action=loginView [L,QSA,NC]
+RewriteRule ^person-authenticate$ index.php?controller=person&action=login [L,QSA,NC]
+RewriteRule ^person-logout$ index.php?controller=person&action=logout [L,QSA,NC]
+
+# Wishlist
+RewriteRule ^wishlist$ index.php?controller=wishlist&action=index [L,QSA,NC]
+RewriteRule ^wishlist-add$ index.php?controller=wishlist&action=add [L,QSA,NC]
+RewriteRule ^wishlist-remove$ index.php?controller=wishlist&action=remove [L,QSA,NC]
 
 # Products
 RewriteRule ^productlist$ index.php?controller=product&action=index [L,QSA,NC]
@@ -36,7 +49,6 @@ RewriteRule ^deleteproduct/([0-9]+)$ index.php?controller=product&action=delete&
 RewriteRule ^viewproduct/([0-9]+)$ index.php?controller=product&action=show&id=$1 [L,QSA,NC]
 RewriteRule ^updateproduct$ index.php?controller=product&action=update [L,QSA,NC]
 RewriteRule ^storeproduct$ index.php?controller=product&action=store [L,QSA,NC]
-
 
 # Brands
 RewriteRule ^brandlist$ index.php?controller=brand&action=index [L,QSA,NC]

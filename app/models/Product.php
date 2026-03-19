@@ -221,7 +221,7 @@ class Product
 
         return $result;
     }
-    public function filterProducts($keyword, $brand_id)
+    public function filterProducts($keyword, $brand_id, $limit, $offset)
     {
         $sql = "SELECT p.*, b.name AS brand_name
             FROM laptofy p
@@ -231,14 +231,35 @@ class Product
         if ($keyword != "") {
             $sql .= " AND p.name LIKE '%$keyword%'";
         }
+        if ($brand_id != "") {
+            $sql .= " AND p.brand_id = '$brand_id'";
+        }
 
+        $sql .= " LIMIT ? OFFSET ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function filterProductsCount($keyword, $brand_id)
+    {
+        $sql = "SELECT COUNT(*) as total
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.status = 1";
+
+        if ($keyword != "") {
+            $sql .= " AND p.name LIKE '%$keyword%'";
+        }
         if ($brand_id != "") {
             $sql .= " AND p.brand_id = '$brand_id'";
         }
 
         $result = $this->conn->query($sql);
-
-        return $result;
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
     public function getProductsPaginated($limit,$offset)
     {
@@ -251,5 +272,43 @@ class Product
         $stmt->execute();
 
         return $stmt->get_result();
+    }
+    public function filterByPrice($min, $max, $limit, $offset){
+        $sql = "SELECT p.*, b.name AS brand_name
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.status = 1";
+
+        if ($min != "") {
+            $sql .= " AND p.price >= '$min'";
+        }
+        if($max != ""){
+            $sql .= " AND p.price <= '$max'";
+        }
+        $sql .= " LIMIT ? OFFSET ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    public function filterByPriceCount($min, $max)
+    {
+       $sql = "SELECT COUNT(*) as total
+            FROM laptofy p
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            WHERE p.status = 1";
+        
+        if ($min != "") {
+            $sql .= " AND p.price >= '$min'";
+        }
+        if($max != ""){
+            $sql .= " AND p.price <= '$max'";
+        }
+
+        $result = $this->conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
+        
     }
 }

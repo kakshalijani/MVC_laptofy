@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/Auth.php';
+require_once __DIR__ . '/Person.php'; 
 
 class Router
 {
@@ -30,5 +31,4 @@ class Router
 
         $controllerObject->$action();
     }
-    
 }

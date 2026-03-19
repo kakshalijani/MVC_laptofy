@@ -26,8 +26,8 @@ class AuthController
             echo "<script>
                     alert('Email and Password required');
                     window.location='/laptofy_MVC/login';
-                  </script>";
-            exit();
+                    </script>";
+                    exit();
         }
 
         $userModel = new User();
