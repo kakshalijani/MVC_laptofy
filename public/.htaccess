@@ -20,6 +20,9 @@ RewriteRule ^price-filter/?$ index.php?controller=home&action=priceFilter [L,QSA
 # Dashboard
 RewriteRule ^dashboard$ index.php?controller=dashboard&action=index [L,QSA,NC]
 
+# Delete Person
+RewriteRule ^delete-person$ index.php?controller=Dashboard&action=deletePerson [L,QSA,NC]
+
 # Profile
 RewriteRule ^profile$ index.php?controller=profile&action=edit [L,QSA,NC]
 RewriteRule ^profileupdate$ index.php?controller=profile&action=update [L,QSA,NC]
