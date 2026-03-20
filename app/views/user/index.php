@@ -10,6 +10,22 @@
 
     <h2>All Products</h2>
 
+    <?php if(Person::check()): ?>
+        <div style="text-align:right; margin-bottom:10px;">
+            <span style="color:#fff; margin-right:10px;">
+                Welcome, <?= $_SESSION['Person']['fullname'] ?>
+            </span>
+            <a href="/laptofy_MVC/public/person-profile"><button type="button">My Profile</button></a>
+            <a href="/laptofy_MVC/public/wishlist"><button type="button">My Wishlist</button></a>
+            <a href="/laptofy_MVC/public/person-logout"><button type="button">Logout</button></a>
+        </div>
+    <?php else: ?>
+        <div style="text-align:right; margin-bottom:10px;">
+            <a href="/laptofy_MVC/public/person-login"><button type="button">Login</button></a>
+            <a href="/laptofy_MVC/public/person-register"><button type="button">Register</button></a>
+        </div>
+    <?php endif; ?>
+
     <input type="text" id="search" placeholder="Search product">
 
     <select id="brandFilter">
@@ -29,7 +45,6 @@
 
     <button id="searchBtn">Search</button>
     <a href="/laptofy_MVC/public/home"><button>RESET</button></a>
-    <a href="/laptofy_MVC/public/wishlist"><button>view Wishlist</button></a>
 
     <div id="productContainer">
         <?php while($product = $products->fetch_assoc()): ?>

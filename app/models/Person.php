@@ -82,4 +82,27 @@ class PersonModel
         $stmt->close();
         return $success;
     }
+    public function updateProfile($id, $fullname, $email)
+{
+    $sql = "UPDATE person SET fullname = ?, email = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    if(!$stmt) die("Prepare failed: " . $this->conn->error);
+    $stmt->bind_param("ssi", $fullname, $email, $id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+
+public function updatePassword($id, $password)
+{
+    $sql = "UPDATE person SET password = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    if(!$stmt) die("Prepare failed: " . $this->conn->error);
+    $stmt->bind_param("si", $password, $id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+
+
 }

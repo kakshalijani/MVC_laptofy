@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Person Login</title>
-    <link rel="stylesheet" href="/laptofy_MVC/css/user.css">
+    <link rel="stylesheet" href="/laptofy_MVC/css/person-profile.css">
 </head>
 <body>
 <div class="page-container">
@@ -45,10 +45,10 @@
             <tr>
                 <td align="center" >
                     <a href="/laptofy_MVC/public/person-register">
-                            <button>register</button>
+                            <button>register</button> </a>
                 </td>
                 <td align="center">
-                        </a>
+                       
                         <a href="/laptofy_MVC/public/home"><button>Home</button></a>
                 </td>
             </tr>

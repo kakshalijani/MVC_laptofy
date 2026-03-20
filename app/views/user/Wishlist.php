@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>My Wishlist</title>
-    <link rel="stylesheet" href="/laptofy_MVC/css/user.css">
+    <link rel="stylesheet" href="/laptofy_MVC/css/wishlist.css">
 </head>
 <body>
 <div class="page-container">

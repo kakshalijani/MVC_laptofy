@@ -59,5 +59,10 @@ RewriteRule ^viewbrand/([0-9]+)$ index.php?controller=brand&action=show&id=$1 [L
 RewriteRule ^updatebrand$ index.php?controller=brand&action=update [L,QSA,NC]
 RewriteRule ^storebrand$ index.php?controller=brand&action=store [L,QSA,NC]
 
+# Person Profile
+RewriteRule ^person-profile$ index.php?controller=Person&action=profile [L,QSA,NC]
+RewriteRule ^person-profile-update$ index.php?controller=Person&action=updateProfile [L,QSA,NC]
+RewriteRule ^person-change-password$ index.php?controller=Person&action=changePassword [L,QSA,NC]
+
 # Default fallback
 RewriteRule ^$ index.php [L,QSA,NC]
