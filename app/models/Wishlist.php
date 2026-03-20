@@ -80,4 +80,16 @@ class Wishlist
         $stmt->close();
         return $row['total'];
     }
+    public function getTotalByPerson($person_id)
+{
+    $sql = "SELECT COUNT(*) as total FROM wishlist WHERE person_id = ?";
+    $stmt = $this->conn->prepare($sql);
+    if(!$stmt) die("Prepare failed: " . $this->conn->error);
+    $stmt->bind_param("i", $person_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+    return $row['total'];
+}
 }

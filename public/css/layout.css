@@ -243,3 +243,187 @@ border:2px solid #fff;
 display:block;
 }
 }
+h2 {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+/* Dashboard stats */
+p {
+    color: #e2e8f0;
+    font-size: 16px;
+    margin-bottom: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Delete button - red style */
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.4s ease;
+}
+
+.btn-delete:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Wishlist count badge */
+.wishlist-badge {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* No data row */
+td[colspan] {
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    padding: 24px;
+}
+
+/*DASHBOARD - PERSONS TABLE*/
+/* Dashboard headings */
+h2 {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+/* Dashboard stats */
+p {
+    color: #e2e8f0;
+    font-size: 16px;
+    margin-bottom: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    border: none !important; 
+    margin-top: 15px;
+}
+
+/* TABLE HEAD */
+th {
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: #fff;
+    padding: 16px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+}
+
+/* TABLE DATA */
+td {
+    padding: 16px;
+    color: #f1f5f9;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    text-align: center;
+}
+
+/* HOVER ROW */
+tr:hover td {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* DELETE BUTTON */
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: #fff;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.4s ease;
+}
+
+.btn-delete:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* WISHLIST BADGE */
+.wishlist-badge {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* EMPTY ROW */
+td[colspan] {
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    padding: 24px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    th, td {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+}
+/* TABLE */
+table {
+    width: 70%; 
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    border: none !important;
+    margin-top: 15px;
+    margin-left: 0;  
+    margin-right: auto; 
+}
