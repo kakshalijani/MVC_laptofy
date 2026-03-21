@@ -16,6 +16,7 @@ RewriteRule ^home/?$ index.php?controller=home&action=index [L,QSA,NC]
 RewriteRule ^show/([0-9]+)/?$ index.php?controller=home&action=show&id=$1 [L,QSA,NC]
 RewriteRule ^filter/?$ index.php?controller=home&action=filter [L,QSA,NC]
 RewriteRule ^price-filter/?$ index.php?controller=home&action=priceFilter [L,QSA,NC]
+RewriteRule ^about$ index.php?controller=home&action=about [L,QSA,NC]
 
 # Dashboard
 RewriteRule ^dashboard$ index.php?controller=dashboard&action=index [L,QSA,NC]
@@ -43,6 +44,13 @@ RewriteRule ^person-logout$ index.php?controller=person&action=logout [L,QSA,NC]
 RewriteRule ^wishlist$ index.php?controller=wishlist&action=index [L,QSA,NC]
 RewriteRule ^wishlist-add$ index.php?controller=wishlist&action=add [L,QSA,NC]
 RewriteRule ^wishlist-remove$ index.php?controller=wishlist&action=remove [L,QSA,NC]
+
+# Cart
+RewriteRule ^cart$ index.php?controller=Cart&action=index [L,QSA,NC]
+RewriteRule ^cart-add$ index.php?controller=Cart&action=add [L,QSA,NC]
+RewriteRule ^cart-remove$ index.php?controller=Cart&action=remove [L,QSA,NC]
+RewriteRule ^cart-increase$ index.php?controller=Cart&action=increase [L,QSA,NC]
+RewriteRule ^cart-decrease$ index.php?controller=Cart&action=decrease [L,QSA,NC]
 
 # Products
 RewriteRule ^productlist$ index.php?controller=product&action=index [L,QSA,NC]

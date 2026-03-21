@@ -1,17 +1,23 @@
+var currentPrice   = "";
+var currentKeyword = "";
+var currentBrand   = "";
+
 function loadProducts(page = 1){
-    var keyword  = document.getElementById("search").value;
-    var brand_id = document.getElementById("brandFilter").value;
+    currentKeyword = document.getElementById("search").value;
+    currentBrand   = document.getElementById("brandFilter").value;
     var mainPagination = document.getElementById("mainPagination");
 
-    if(keyword === "" && brand_id === ""){
-        mainPagination.classList.remove("hidden");
+    if(currentKeyword === "" && currentBrand === ""){
+        mainPagination.style.display = "flex"; 
         window.location.href = "/laptofy_MVC/public/Home";
         return;
     }
 
-    mainPagination.classList.add("hidden");
+    mainPagination.style.display = "none";
 
-    fetch("/laptofy_MVC/public/filter?keyword=" + keyword +"&brand_id=" + brand_id + "&page=" + page)
+    fetch("/laptofy_MVC/public/filter?keyword=" + currentKeyword +
+          "&brand_id=" + currentBrand +
+          "&page=" + page)
 
     .then(function(response){ return response.text(); })
     .then(function(data){
@@ -22,28 +28,33 @@ function loadProducts(page = 1){
         document.getElementById("productContainer").innerHTML = cards ? cards.innerHTML : data;
 
         var filterPagination = doc.getElementById("filterPagination");
-        var mainPagination = document.getElementById("mainPagination");
-        if(filterPagination){
+        if(filterPagination && filterPagination.innerHTML.trim() !== ""){
             mainPagination.innerHTML = filterPagination.innerHTML;
+            mainPagination.style.display = "flex"; 
         } else {
             mainPagination.innerHTML = "";
+            mainPagination.style.display = "none";
         }
     });
 }
 
 function loadByPrice(page = 1){
-    var price = document.getElementById("priceFilter").value;
+    if(page === 1){
+        currentPrice = document.getElementById("priceFilter").value;
+    }
+
     var mainPagination = document.getElementById("mainPagination");
 
-    if(price === ""){
-        mainPagination.classList.remove("hidden");
+    if(currentPrice === ""){
+        mainPagination.style.display = "flex";
         window.location.href = "/laptofy_MVC/public/Home";
         return;
     }
 
-    mainPagination.classList.add("hidden");
+    mainPagination.style.display = "none";
 
-    fetch("/laptofy_MVC/public/price-filter?price_range=" + price + "&page=" + page)
+    fetch("/laptofy_MVC/public/price-filter?price_range=" + currentPrice +
+          "&page=" + page)
 
     .then(function(response){ return response.text(); })
     .then(function(data){
@@ -54,15 +65,25 @@ function loadByPrice(page = 1){
         document.getElementById("productContainer").innerHTML = cards ? cards.innerHTML : data;
 
         var filterPagination = doc.getElementById("filterPagination");
-        var mainPagination = document.getElementById("mainPagination");
-        if(filterPagination){
+        if(filterPagination && filterPagination.innerHTML.trim() !== ""){
             mainPagination.innerHTML = filterPagination.innerHTML;
+            mainPagination.style.display = "flex"; 
         } else {
             mainPagination.innerHTML = "";
+            mainPagination.style.display = "none";
         }
     });
 }
 
+function resetFilters(){
+    currentPrice   = "";
+    currentKeyword = "";
+    currentBrand   = "";
+    document.getElementById("search").value      = "";
+    document.getElementById("brandFilter").value = "";
+    document.getElementById("priceFilter").value = "";
+    window.location.href = "/laptofy_MVC/public/Home";
+}
 
 // Search button
 document.getElementById("searchBtn").addEventListener("click", function(){
@@ -74,7 +95,7 @@ document.getElementById("brandFilter").addEventListener("change", function(){
     loadProducts(1);
 });
 
-//Price dropdown 
+// Price dropdown
 document.getElementById("priceFilter").addEventListener("change", function(){
     loadByPrice(1);
 });

@@ -1,6 +1,5 @@
 /* ============================================
    WISHLIST PAGE CSS
-   Matches existing project style
    ============================================ */
 
 /* GLOBAL RESET */
@@ -16,24 +15,102 @@ body {
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea, #764ba2);
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 30px;
+    flex-direction: column; /* ✅ stack navbar, content, footer */
+    align-items: center;
+    padding: 0;
 }
 
 /* PAGE CONTAINER */
 .page-container {
     width: 100%;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
+    padding: 100px 20px 40px 20px; /* ✅ top padding for fixed navbar */
+    flex: 1;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 30px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand a {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand a:hover {
+    color: #06b6d4;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+}
+
+.navbar-links a:hover {
+    color: #06b6d4;
+    border-bottom: 2px solid #06b6d4;
+}
+
+.navbar-name {
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.navbar-btn {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4) !important;
+    color: #fff !important;
+    padding: 8px 20px !important;
+    border-radius: 30px !important;
+    font-size: 14px !important;
+    border-bottom: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.navbar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: none !important;
+    color: #fff !important;
 }
 
 /* ============================================
    MAIN WISHLIST TABLE
    ============================================ */
 table {
+    width: 100%;
     background: rgba(255, 255, 255, 0.18);
     backdrop-filter: blur(18px);
     border-radius: 18px;
@@ -92,7 +169,9 @@ tbody td {
     color: #f1f5f9;
     font-size: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    border: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
     text-align: center;
 }
 
@@ -149,17 +228,11 @@ tbody td form button:hover {
     background: linear-gradient(135deg, #dc2626, #b91c1c);
 }
 
-/* Navigation buttons row */
-thead tr:first-child th a button,
-tbody tr:last-child th a button {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 8px 16px;
-    font-size: 13px;
-    margin: 4px;
-}
-
-tbody tr:last-child th a button:hover {
-    background: rgba(255, 255, 255, 0.35);
+/* ============================================
+   LINKS
+   ============================================ */
+a {
+    text-decoration: none;
 }
 
 /* ============================================
@@ -173,10 +246,116 @@ tbody tr:last-child th a button:hover {
 }
 
 /* ============================================
-   LINKS
+   FOOTER
    ============================================ */
-a {
+.footer {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 60px;
+    padding: 40px 30px 0px 30px;
+    width: 100%;
+    align-self: stretch;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-brand h3 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.footer-brand p {
+    color: #e2e8f0;
+    font-size: 14px;
+    max-width: 200px;
+    line-height: 1.6;
+}
+
+.footer-links h4,
+.footer-contact h4,
+.footer-social h4 {
+    color: #06b6d4;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #e2e8f0;
     text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+}
+
+.footer-links a:hover {
+    color: #06b6d4;
+    border-bottom: 1px solid #06b6d4;
+    padding-left: 5px;
+}
+
+.footer-contact p {
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.social-links a {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: #fff;
+    text-decoration: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border-bottom: none !important;
+}
+
+.social-links a:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: none !important;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 16px 0;
+    color: #94a3b8;
+    font-size: 13px;
 }
 
 /* ============================================
@@ -216,10 +395,34 @@ a {
         padding: 6px 12px;
         font-size: 12px;
     }
+
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 20px;
+    }
+
+    .navbar-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .page-container {
+        padding-top: 130px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .footer-brand p {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
-    /* Hide image column on very small screens */
     thead tr:last-child th:first-child,
     tbody td:first-child {
         display: none;

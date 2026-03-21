@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/Brand.php';
+require_once __DIR__ . '/../core/Person.php';
 
 class HomeController {
 
@@ -9,7 +10,7 @@ class HomeController {
         $productModel = new Product();
         $brandModel = new Brand();
 
-        $limit = 1;
+        $limit = 4;
 
         $page = $_GET['page'] ?? 1;
 
@@ -24,6 +25,10 @@ class HomeController {
         $brands = $brandModel->getAll();
 
         require __DIR__.'/../views/user/index.php';
+    }
+    public function about()
+    {
+        require __DIR__ . '/../views/user/about.php';
     }
 
     public function show()

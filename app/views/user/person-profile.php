@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/laptofy_MVC/css/person-profile.css">
 </head>
 <body>
+    
 <div class="page-container">
 
     <form action="/laptofy_MVC/public/person-profile-update" method="POST">
